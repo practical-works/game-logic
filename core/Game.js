@@ -39,8 +39,23 @@ export default class Game {
     }, 10);
   }
 
-  createObject(name, options = {}) {
+  createObject(name = "unamed", options = {}) {
+    if (this.objects[name])
+      throw Error(`"${name}" game object already created.`);
     return (this.objects[name] = new GameObject(this, options));
+  }
+
+  createGrid(baseObjectName = "unamed", options = {}) {
+    const { columns = 1, rows = 1, padding = 1 } = options;
+    const { position = { x: 0, y: 0 } } = options;
+    const count = columns * rows;
+    const grid = [];
+    for (let i = 0; i < count; i++) {
+      const gameObject = this.createObject(`${baseObjectName}${i}`);
+      // ...
+      grid[i] = gameObject;
+    }
+    return grid;
   }
 
   drawObjects() {
