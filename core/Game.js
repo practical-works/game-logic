@@ -45,17 +45,25 @@ export default class Game {
     return (this.objects[name] = new GameObject(this, options));
   }
 
-  createGrid(baseObjectName = "unamed", options = {}) {
-    const { columns = 1, rows = 1, padding = 1 } = options;
+  createGrid(name = "unamed", options = {}) {
+    const { cell = { color: "", size: {}, margin: 1 } } = options;
+    const { size = { columns: 1, rows: 1 } } = options;
     const { position = { x: 0, y: 0 } } = options;
-    const count = columns * rows;
-    const grid = [];
+    const count = size.columns * size.rows;
+    let column = 0;
+    let row = 0;
     for (let i = 0; i < count; i++) {
-      const gameObject = this.createObject(`${baseObjectName}${i}`);
-      // ...
-      grid[i] = gameObject;
+      const gameObject = this.createObject(`${name}${i}`, cell);
+      gameObject.position.x =
+        (position.x + cell.margin) + column * (gameObject.size.width + cell.margin);
+      gameObject.position.y =
+        (position.y + cell.margin) + row * (gameObject.size.height + cell.margin);
+      column++;
+      if (column >= size.columns) {
+        column = 0;
+        row++;
+      }
     }
-    return grid;
   }
 
   drawObjects() {

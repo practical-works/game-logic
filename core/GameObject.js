@@ -86,17 +86,16 @@ export default class GameObject {
   }
 
   draw() {
-    const context = this.game.$context;
-    context.beginPath();
-    context.fillStyle = this.color;
-    context.rect(
+    this.game.$context.beginPath();
+    this.game.$context.fillStyle = this.color;
+    this.game.$context.rect(
       this.hotPointPosition.x,
       this.hotPointPosition.y,
       this.size.width,
       this.size.height
     );
-    context.fill();
-    context.beginPath();
+    this.game.$context.fill();
+    this.game.$context.beginPath();
     return this;
   }
 }

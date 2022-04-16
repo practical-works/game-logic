@@ -17,8 +17,8 @@ This is an example featuring some useful simple common game development related 
     - [x] Define **position** and **size** for game object.
     - [x] Define **hot point** for game object.
     - [x] **Center** position and hot point of game object.
-    - [ ] Align game objects in **horizontal** and **vertical** line.
-    - [ ] Align game objects in **grid**.
+    - [x] Align game objects in **horizontal** and **vertical** line.
+    - [x] Align game objects in **grid**.
 - Control:
     - [x] Handle game **input**.
     - [x] **Move** game object based on input.
