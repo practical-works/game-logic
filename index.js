@@ -41,11 +41,25 @@ game.createObject("actor", {
   centerPosition: map,
 });
 
+// [Text]
+const pointerInfos = game.createObject("pointerInfos", {
+  type: "text",
+  color: "yellow",
+});
+
 // [Loop]
 game.update((game) => {
   if (game.input.getKey("ArrowUp")) game.objects.actor.move(0, -3);
   if (game.input.getKey("ArrowDown")) game.objects.actor.move(0, 3);
   if (game.input.getKey("ArrowRight")) game.objects.actor.move(3);
   if (game.input.getKey("ArrowLeft")) game.objects.actor.move(-3);
+  if (game.objects.actor.overlapsPoint(game.input.pointer))
+    game.objects.actor.color = "darkRed";
+  else game.objects.actor.color = "orange";
+  pointerInfos.text = `${game.input.pointer.x},${game.input.pointer.y} 🐭`;
+  pointerInfos.position = {
+    x: game.resolution.width - pointerInfos.textWidth - 10,
+    y: game.resolution.height - 10,
+  };
   game.drawObjects();
 });

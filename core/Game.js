@@ -4,9 +4,9 @@ import GameInput from "./GameInput.js";
 export default class Game {
   resolution = { width: 640, height: 480 };
   objects = {};
-  input = new GameInput();
   $canvas = document.createElement("canvas");
   $context = this.$canvas.getContext("2d");
+  input = new GameInput(this);
   _initialized = false;
   _interval;
 
@@ -42,7 +42,7 @@ export default class Game {
   createObject(name = "unamed", options = {}) {
     if (this.objects[name])
       throw Error(`"${name}" game object already created.`);
-    return (this.objects[name] = new GameObject(this, options));
+    return (this.objects[name] = new GameObject(this, { ...options, name }));
   }
 
   createGrid(name = "unamed", options = {}) {
@@ -55,9 +55,11 @@ export default class Game {
     for (let i = 0; i < count; i++) {
       const gameObject = this.createObject(`${name}${i}`, cell);
       gameObject.position.x =
-        (position.x + cell.margin) + column * (gameObject.size.width + cell.margin);
+        position.x +
+        cell.margin +
+        column * (gameObject.size.width + cell.margin);
       gameObject.position.y =
-        (position.y + cell.margin) + row * (gameObject.size.height + cell.margin);
+        position.y + cell.margin + row * (gameObject.size.height + cell.margin);
       column++;
       if (column >= size.columns) {
         column = 0;

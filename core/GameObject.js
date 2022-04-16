@@ -1,14 +1,22 @@
 export default class GameObject {
   game = null;
+  name = "gameObject";
+  type = "rectangle";
+  text = "";
+  font = "20px consolas";
   color = "white";
   size = { width: 32, height: 32 };
   position = { x: 0, y: 0 };
   hotPoint = { x: 0, y: 0 };
 
   constructor(game, options = {}) {
-    const { color, size, position, hotPoint } = options;
+    const { name, type, text, font, color, size, position, hotPoint } = options;
     const { centerHotPoint = false, centerPosition = false } = options;
     if (game) this.game = game;
+    if (name) this.name = name;
+    if (type) this.type = type;
+    this.text = text || this.name;
+    if (font) this.font = font;
     if (color) this.color = color;
     if (size) {
       const { width = 0, height = 0 } = size;
@@ -85,15 +93,41 @@ export default class GameObject {
     return this;
   }
 
+  overlapsPoint(point = {}) {
+    const { x = 0, y = 0 } = point;
+    // return (
+    //   x >= this.topLeftPosition.x &&
+    //   x <= this.topRightPosition.x &&
+    //   y >= this.topLeftPosition.y &&
+    //   y <= this.bottomLeftPosition.y
+    // );
+    // ?????????????
+  }
+
   draw() {
     this.game.$context.beginPath();
     this.game.$context.fillStyle = this.color;
-    this.game.$context.rect(
-      this.hotPointPosition.x,
-      this.hotPointPosition.y,
-      this.size.width,
-      this.size.height
-    );
+    switch (this.type) {
+      case "rectangle":
+        this.game.$context.rect(
+          this.hotPointPosition.x,
+          this.hotPointPosition.y,
+          this.size.width,
+          this.size.height
+        );
+        break;
+      case "text":
+        this.game.$context.font = this.font;
+        const textMetrics = this.game.$context.measureText(this.text);
+        this.textWidth = textMetrics.width;
+        this.game.$context.fillText(
+          this.text,
+          this.hotPointPosition.x,
+          this.hotPointPosition.y
+        );
+      default:
+        break;
+    }
     this.game.$context.fill();
     this.game.$context.beginPath();
     return this;
