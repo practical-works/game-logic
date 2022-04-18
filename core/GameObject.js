@@ -1,135 +1,134 @@
+import Game from "./Game.js";
+import GameList from "./GameList.js";
+
 export default class GameObject {
-  game = null;
-  name = "gameObject";
-  type = "rectangle";
-  text = "";
-  font = "20px consolas";
-  color = "white";
-  size = { width: 32, height: 32 };
-  position = { x: 0, y: 0 };
-  hotPoint = { x: 0, y: 0 };
+  static _count = 0;
+  _id = -1;
+  _game = null;
+  _name = "";
+  _size = { w: 32, h: 32 };
+  _hotspot = { x: 0, y: 0 };
+  _position = { x: 0, y: 0 };
+  _color = "white";
+  _parent = null;
+  _childs = new GameList();
 
   constructor(game, options = {}) {
-    const { name, type, text, font, color, size, position, hotPoint } = options;
-    const { centerHotPoint = false, centerPosition = false } = options;
-    if (game) this.game = game;
-    if (name) this.name = name;
-    if (type) this.type = type;
-    this.text = text || this.name;
-    if (font) this.font = font;
-    if (color) this.color = color;
-    if (size) {
-      const { width = 0, height = 0 } = size;
-      this.size = { width, height };
-    }
-    if (position) {
-      const { x = 0, y = 0 } = position;
-      this.position = { x, y };
-    }
-    if (hotPoint) {
-      const { x = 0, y = 0 } = hotPoint;
-      this.hotPoint = { x, y };
-    }
-    if (centerHotPoint) this.centerHotPoint();
-    if (centerPosition) this.centerPosition(centerPosition);
+    const { name, size, hotspot, position, color } = options;
+    const { parent, childs } = options;
+    GameObject._count++;
+    this._id = GameObject._count - 1;
+    this.game = game;
+    this.name = name;
+    this.size = size;
+    this.hotspot = hotspot;
+    this.position = position;
+    this.color = color;
+    this.parent = parent;
+    this.childs = childs;
+    this.childs.onAdd = gObj => gObj.parent = this;
+    this.childs.onRemove = gObj => gObj.parent = null;
   }
 
-  get hotPointPosition() {
-    const x = this.position.x - this.hotPoint.x;
-    const y = this.position.y - this.hotPoint.y;
+  static count() {
+    return GameObject._count;
+  }
+
+  get id() {
+    return this._id;
+  }
+
+  get game() {
+    return this._game;
+  }
+  set game(game) {
+    if (game instanceof Game) this._game = game;
+  }
+
+  get name() {
+    return this._name;
+  }
+  set name(name) {
+    this._name = name;
+  }
+
+  get size() {
+    return this._size;
+  }
+  set size(size = {}) {
+    const { w, h } = size;
+    if (!isNaN(w)) this._size.w = Math.abs(w);
+    if (!isNaN(h)) this._size.h = Math.abs(h);
+  }
+
+  get hotspot() {
+    return this._hotspot;
+  }
+  set hotspot(hotspot = {}) {
+    const { x, y } = hotspot;
+    if (!isNaN(x)) this._hotspot.x = x;
+    if (!isNaN(y)) this._hotspot.y = y;
+  }
+
+  get position() {
+    return this._position;
+  }
+  set position(position = {}) {
+    const { x, y } = position;
+    if (!isNaN(x)) this._position.x = x;
+    if (!isNaN(y)) this._position.y = y;
+  }
+
+  get color() {
+    return this._color;
+  }
+  set color(color) {
+    this._color = String(color);
+  }
+
+  get parent() {
+    return this._parent;
+  }
+  set parent(parent) {
+    if (parent && !(parent instanceof GameObject)) return;
+    if (this._parent) this._parent.childs.remove(this);
+    this._parent = parent || null;
+    if (this._parent) this._parent.childs.add(this);
+  }
+
+  get childs() {
+    return this._childs;
+  }
+  set childs(childs) {
+    if (childs && !(childs instanceof GameList)) return;
+    if (this._childs) for (const child of this._childs) child.parent = null;
+    this._childs = childs || new GameList();
+    if (this._childs) for (const child of this._childs) child.parent = this;
+  }
+
+  get $offset() {
+    const x = this.parent ? this.parent.position.x : 0;
+    const y = this.parent ? this.parent.position.y : 0;
     return { x, y };
   }
 
-  get topLeftPosition() {
-    const x = this.position.x;
-    const y = this.position.y;
+  get $truePosition() {
+    const x = this.$offset.x + this.position.x - this.hotspot.x;
+    const y = this.$offset.y + this.position.y - this.hotspot.y;
     return { x, y };
-  }
-
-  get topRightPosition() {
-    const x = this.position.x + this.size.width;
-    const y = this.position.y;
-    return { x, y };
-  }
-
-  get bottomLeftPosition() {
-    const x = this.position.x;
-    const y = this.position.y + this.size.height;
-    return { x, y };
-  }
-
-  get bottomRightPosition() {
-    const x = this.position.x + this.size.width;
-    const y = this.position.y + this.size.height;
-    return { x, y };
-  }
-
-  centerHotPoint() {
-    this.hotPoint.x = this.size.width * 0.5;
-    this.hotPoint.y = this.size.height * 0.5;
-    return this;
-  }
-
-  centerPosition(relatedGameObject) {
-    if (!(relatedGameObject instanceof GameObject)) {
-      relatedGameObject = { size: {}, position: { x: 0, y: 0 } };
-      relatedGameObject.size.width = this.game.resolution.width;
-      relatedGameObject.size.height = this.game.resolution.height;
-    }
-    this.position.x =
-      relatedGameObject.position.x +
-      (relatedGameObject.size.width - this.size.width) * 0.5 +
-      this.hotPoint.x;
-    this.position.y =
-      relatedGameObject.position.y +
-      (relatedGameObject.size.height - this.size.height) * 0.5 +
-      this.hotPoint.y;
-    return this;
-  }
-
-  move(x = 0, y = 0) {
-    this.position.x += x;
-    this.position.y += y;
-    return this;
-  }
-
-  overlapsPoint(point = {}) {
-    const { x = 0, y = 0 } = point;
-    // return (
-    //   x >= this.topLeftPosition.x &&
-    //   x <= this.topRightPosition.x &&
-    //   y >= this.topLeftPosition.y &&
-    //   y <= this.bottomLeftPosition.y
-    // );
-    // ?????????????
   }
 
   draw() {
-    this.game.$context.beginPath();
-    this.game.$context.fillStyle = this.color;
-    switch (this.type) {
-      case "rectangle":
-        this.game.$context.rect(
-          this.hotPointPosition.x,
-          this.hotPointPosition.y,
-          this.size.width,
-          this.size.height
-        );
-        break;
-      case "text":
-        this.game.$context.font = this.font;
-        const textMetrics = this.game.$context.measureText(this.text);
-        this.textWidth = textMetrics.width;
-        this.game.$context.fillText(
-          this.text,
-          this.hotPointPosition.x,
-          this.hotPointPosition.y
-        );
-      default:
-        break;
-    }
-    this.game.$context.fill();
-    this.game.$context.beginPath();
-    return this;
+    const ctx = this.game.$context;
+    ctx.beginPath();
+    ctx.fillStyle = this.color;
+    ctx.rect(
+      this.$truePosition.x,
+      this.$truePosition.y,
+      this.size.w,
+      this.size.h
+    );
+    ctx.fill();
+    ctx.beginPath();
   }
 }

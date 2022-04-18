@@ -16,6 +16,8 @@ This is an example featuring some useful simple common game development related 
 - Layout:
     - [x] Define **position** and **size** for game object.
     - [x] Define **hot point** for game object.
+    - [x] Define **parent-child hierarchy** between game objects.
+    - [x] Perform **relative positioning** of parent-child game objects.
     - [x] **Center** position and hot point of game object.
     - [x] Align game objects in **horizontal** and **vertical** line.
     - [x] Align game objects in **grid**.
