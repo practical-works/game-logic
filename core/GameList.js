@@ -33,12 +33,16 @@ export default class GameList {
     return this._gameObjects.length;
   }
 
-  gameObjById(gameObjectId) {
-    return this._gameObjects.find((gObj) => gObj.id === gameObjectId);
+  gameObjById(id) {
+    return this._gameObjects.find((gObj) => gObj.id === id);
   }
 
-  gameObjsByName(gameObjectName) {
-    return this._gameObjects.filter((gObj) => gObj.name === gameObjectName);
+  gameObjByName(name) {
+    return this._gameObjects.find((gObj) => gObj.name === name);
+  }
+
+  gameObjsByName(name) {
+    return this._gameObjects.filter((gObj) => gObj.name === name);
   }
 
   add(gameObject) {
@@ -59,12 +63,18 @@ export default class GameList {
     return addedGameObjects;
   }
 
-  remove(gameObjectId) {
-    const i = this._gameObjects.findIndex((gObj) => gObj.id === gameObjectId);
+  remove(id) {
+    const i = this._gameObjects.findIndex((gObj) => gObj.id === id);
     if (i >= 0) {
       const removedGameObject = this._gameObjects.splice(i, 1)[0];
       this.onRemove(removedGameObject);
       return removedGameObject;
     }
+  }
+
+  toObj() {
+    const gListObj = {};
+    for (const gObj of this._gameObjects) gListObj[gObj.name] = gObj;
+    return gListObj;
   }
 }

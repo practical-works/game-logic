@@ -6,6 +6,7 @@ import GameInput from "./GameInput.js";
 export default class Game {
   _context;
   _input = new GameInput();
+  _data = {};
   _loopId = 0;
   _title = "";
   _objects = new GameList();
@@ -32,6 +33,13 @@ export default class Game {
 
   get input() {
     return this._input;
+  }
+
+  get data() {
+    return this._data;
+  }
+  set data(data) {
+    if (data && typeof data === "object") this._data = data;
   }
 
   get title() {
@@ -105,25 +113,25 @@ export default class Game {
   }
 
   obj(name) {
-    if (this._objects[name]) return this._objects[name];
+    return this._objects.gameObjByName(name);
   }
 
   newObj(options = {}) {
     const { name, type, ignore } = options;
-    if (this._objects[name])
+    if (this._objects.gameObjByName(name))
       throw Error(`A game object named "${name}" already exist.`);
     switch (type) {
       case "text":
-        this._objects[name] = new TextGameObject(this, options);
+        return this._objects.add(new TextGameObject(this, options));
         break;
       default:
-        this._objects[name] = new GameObject(this, options);
+        return this._objects.add(new GameObject(this, options));
         break;
     }
     return this._objects[name];
   }
 
-  newGrid() {
+  newGrid(options = {}) {
     // const { cell = { color: "", size: {}, margin: 1 } } = options;
     // const { size = { columns: 1, rows: 1 } } = options;
     // const { position = { x: 0, y: 0 } } = options;
@@ -147,9 +155,6 @@ export default class Game {
   }
 
   draw() {
-    for (const key in this._objects) {
-      const obj = this._objects[key];
-      if (obj instanceof GameObject) obj.draw();
-    }
+    for (const obj of this._objects) obj.draw();
   }
 }

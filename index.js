@@ -26,11 +26,11 @@ new Game({
     // [ Enemy ]
     game.newObj({
       name: "enemy",
-      parent: game.objs.map,
+      parent: game.obj("map"),
       color: "indianRed",
       size: { w: 32, h: 32 },
       hotspot: { x: 16, y: 16 },
-      position: { x: game.objs.map.size.w - 32, y: 32 },
+      position: { x: game.obj("map").size.w - 32, y: 32 },
     });
 
     // [ Cursor Text ]
@@ -40,44 +40,58 @@ new Game({
       color: "#FFD580",
       font: "20px consolas",
     });
+
+    // Remember objects initial colors
+    for (const obj of game.objs) obj.data.initColor = obj.color;
   },
 
   onUpdate(game) {
-    // Grab defined game objects
-    const { map, actor, enemy, cursorTxt, debugTxt } = game.objs;
+    // Grab objects
+    const { map, actor, enemy, cursorTxt, debugTxt } = game.objs.toObj();
+    const key = game.input.key.bind(game.input);
+    const mouse = game.input.mouse.bind(game.input);
+    const cursor = game.input.cursor;
 
     // Control actor
-    if (game.input.key("ArrowRight")) actor.moveX(3);
-    if (game.input.key("ArrowLeft")) actor.moveX(-3);
-    if (game.input.key("ArrowUp")) actor.moveY(-3);
-    if (game.input.key("ArrowDown")) actor.moveY(3);
+    if (key("ArrowRight")) actor.moveX(3);
+    if (key("ArrowLeft")) actor.moveX(-3);
+    if (key("ArrowUp")) actor.moveY(-3);
+    if (key("ArrowDown")) actor.moveY(3);
 
     // Control map
-    if (game.input.key("KeyD")) map.moveX(1);
-    if (game.input.key("KeyA")) map.moveX(-1);
-    if (game.input.key("KeyW")) map.moveY(-1);
-    if (game.input.key("KeyS")) map.moveY(1);
+    if (key("KeyD")) map.moveX(1);
+    if (key("KeyA")) map.moveX(-1);
+    if (key("KeyW")) map.moveY(-1);
+    if (key("KeyS")) map.moveY(1);
 
     // Display cursor position
-    const cursor = game.input.cursor;
     cursorTxt.text = `${cursor.x},${cursor.y} 🐭`;
-    cursorTxt.position = {
-      x: game.size.w - cursorTxt.size.w - 8,
-      y: game.size.h - cursorTxt.size.h - 8,
-    };
+    cursorTxt.position.x = game.size.w - cursorTxt.size.w - 8;
+    cursorTxt.position.y = game.size.h - cursorTxt.size.h - 8;
 
     // Highlight game objects on cursor hover
-    if (map.overlapsPoint(cursor)) map.color = "green";
-    else map.color = "darkGreen";
-    if (actor.overlapsPoint(cursor)) actor.color = "yellow";
-    else actor.color = "orange";
-    if (enemy.overlapsPoint(cursor)) enemy.color = "red";
-    else enemy.color = "indianRed";
+    map.color = map.overlapsPoint(cursor) ? "green" : map.data.initColor;
+    actor.color = actor.overlapsPoint(cursor) ? "yellow" : actor.data.initColor;
+    enemy.color = enemy.overlapsPoint(cursor) ? "red" : enemy.data.initColor;
 
     // Drag game objects with mouse
-    if (actor.overlapsPoint(cursor) && game.input.mouse("left"))
+    const leftClick = mouse("left");
+    if (leftClick) {
+      if (map.overlapsPoint(cursor)) {
+        if (!game.data.initCursor) game.data.initCursor = { ...cursor };
+        if (!game.data.initMapGlobPos)
+          game.data.initMapGlobPos = { ...map.globalPosition };
+        const x = game.data.initMapGlobPos.x + cursor.x - game.data.initCursor.x;
+        const y = game.data.initMapGlobPos.y + cursor.y - game.data.initCursor.y;
+        map.globalPosition = { x, y };
+      }
+    } else {
+      delete game.data.initCursor;
+      delete game.data.initMapGlobPos;
+    }
+    if (actor.overlapsPoint(cursor) && leftClick)
       actor.globalPosition = { x: cursor.x, y: cursor.y };
-    if (enemy.overlapsPoint(cursor) && game.input.mouse("left"))
+    if (enemy.overlapsPoint(cursor) && leftClick)
       enemy.globalPosition = { x: cursor.x, y: cursor.y };
 
     // Draw all game objects

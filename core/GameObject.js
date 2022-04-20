@@ -5,6 +5,7 @@ export default class GameObject {
   static _count = 0;
   _id = -1;
   _game = null;
+  _data = {};
   _name = "";
   _size = { w: 32, h: 32 };
   _hotspot = { x: 0, y: 0 };
@@ -48,6 +49,13 @@ export default class GameObject {
   }
   set game(game) {
     if (game instanceof Game) this._game = game;
+  }
+
+  get data() {
+    return this._data;
+  }
+  set data(data) {
+    if (data && typeof data === "object") this._data = data;
   }
 
   get name() {
