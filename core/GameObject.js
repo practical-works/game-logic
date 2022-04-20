@@ -12,22 +12,27 @@ export default class GameObject {
   _color = "white";
   _parent = null;
   _childs = new GameList();
+  _hidden = false;
 
   constructor(game, options = {}) {
-    const { name, size, hotspot, position, color } = options;
-    const { parent, childs } = options;
+    const { name, size, hotspot, position, color, hidden } = options;
+    const { parent, childs, centerX, centerY, center } = options;
     GameObject._count++;
     this._id = GameObject._count - 1;
     this.game = game;
-    this.name = name;
+    this.name = name || `unamedGameObject${this.id}`;
     this.size = size;
     this.hotspot = hotspot;
     this.position = position;
     this.color = color;
+    this.hidden = hidden;
     this.parent = parent;
     this.childs = childs;
-    this.childs.onAdd = gObj => gObj.parent = this;
-    this.childs.onRemove = gObj => gObj.parent = null;
+    this.childs.onAdd = (gObj) => (gObj.parent = this);
+    this.childs.onRemove = (gObj) => (gObj.parent = null);
+    if (centerX) this.centerX(centerX);
+    if (centerY) this.centerY(centerY);
+    if (center) this.center(center);
   }
 
   static count() {
@@ -49,7 +54,7 @@ export default class GameObject {
     return this._name;
   }
   set name(name) {
-    this._name = name;
+    if (name) this._name = name;
   }
 
   get size() {
@@ -83,7 +88,14 @@ export default class GameObject {
     return this._color;
   }
   set color(color) {
-    this._color = String(color);
+    if (color) this._color = String(color);
+  }
+
+  get hidden() {
+    this._hidden;
+  }
+  set hidden(hidden) {
+    this._hidden = Boolean(hidden);
   }
 
   get parent() {
@@ -106,19 +118,89 @@ export default class GameObject {
     if (this._childs) for (const child of this._childs) child.parent = this;
   }
 
+  get topLeft() {
+    return this.$truePosition;
+  }
+
+  get topRight() {
+    const x = this.$truePosition.x + this.size.w;
+    const y = this.$truePosition.y;
+    return { x, y };
+  }
+
+  get bottomLeft() {
+    const x = this.$truePosition.x;
+    const y = this.$truePosition.y + this.size.h;
+    return { x, y };
+  }
+
+  get bottomRight() {
+    const x = this.$truePosition.x + this.size.w;
+    const y = this.$truePosition.y + this.size.h;
+    return { x, y };
+  }
+
+  get globalPosition() {
+    const x = this.position.x + this.$offset.x;
+    const y = this.position.y + this.$offset.y;
+    return { x, y };
+  }
+  set globalPosition(globalPosition = {}) {
+    const { x, y } = globalPosition;
+    if (!isNaN(x)) this.position.x = x - this.$offset.x;
+    if (!isNaN(y)) this.position.y = y - this.$offset.y;
+  }
+
   get $offset() {
-    const x = this.parent ? this.parent.position.x : 0;
-    const y = this.parent ? this.parent.position.y : 0;
+    const x = this.parent ? this.parent.$truePosition.x : 0;
+    const y = this.parent ? this.parent.$truePosition.y : 0;
     return { x, y };
   }
 
   get $truePosition() {
-    const x = this.$offset.x + this.position.x - this.hotspot.x;
-    const y = this.$offset.y + this.position.y - this.hotspot.y;
+    const x = this.globalPosition.x - this.hotspot.x;
+    const y = this.globalPosition.y - this.hotspot.y;
     return { x, y };
   }
 
+  move(x = 0, y = 0) {
+    if (x && !isNaN(x)) this.position.x += x;
+    if (y && !isNaN(y)) this.position.y += y;
+  }
+  moveX(x) {
+    this.move(x, 0);
+  }
+  moveY(y) {
+    this.move(0, y);
+  }
+
+  center(relatedGameObj = this.parent, horiz = true, vert = true) {
+    if (!(relatedGameObj instanceof GameObject)) relatedGameObj = this.parent;
+    const { position, size } = relatedGameObj || this.game;
+    const { x = 0, y = 0 } = position || {};
+    const { w, h } = size;
+    if (horiz) this.position.x = (w - this.size.w) * 0.5 + this.hotspot.x;
+    if (vert) this.position.y = (h - this.size.h) * 0.5 + this.hotspot.y;
+  }
+  centerX(relatedGameObj) {
+    this.center(relatedGameObj, true, false);
+  }
+  centerY(relatedGameObj) {
+    this.center(relatedGameObj, false, true);
+  }
+
+  overlapsPoint(point = {}) {
+    const { x = 0, y = 0 } = point;
+    return (
+      x >= this.topLeft.x &&
+      x <= this.topRight.x &&
+      y >= this.topLeft.y &&
+      y <= this.bottomLeft.y
+    );
+  }
+
   draw() {
+    if (this.hidden) return;
     const ctx = this.game.$context;
     ctx.beginPath();
     ctx.fillStyle = this.color;
@@ -129,6 +211,6 @@ export default class GameObject {
       this.size.h
     );
     ctx.fill();
-    ctx.beginPath();
+    ctx.closePath();
   }
 }

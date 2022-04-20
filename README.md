@@ -11,18 +11,24 @@ This is an example featuring some useful simple common game development related 
 ## 🎯 Achieved Objectives
 
 - Base:
+    - [x] Define and render **game screen**.
+    - [x] Create and run **game loop**.
     - [x] Define **game object**.
-    - [x] Define **game loop**.
+    - [x] Render **basic shape** game object.
+    - [x] Render **text** game object.
 - Layout:
-    - [x] Define **position** and **size** for game object.
-    - [x] Define **hot point** for game object.
-    - [x] Define **parent-child hierarchy** between game objects.
-    - [x] Perform **relative positioning** of parent-child game objects.
-    - [x] **Center** position and hot point of game object.
-    - [x] Align game objects in **horizontal** and **vertical** line.
-    - [x] Align game objects in **grid**.
+    - [x] Define **size** (width, height) of game object.
+    - [x] Define **position** (x, y) of game object.
+    - [x] Define **hotspot** (x, y) of game object.
+    - [x] Handle **hotspot-based positioning** of game object.
+    - [x] Define and handle **parent-child hierarchy** between game objects.
+    - [x] Perform **relative hierarchical positioning** of game objects.
+    - [x] **Center** position and hotspot of game object.
+    - [x] **Align** game objects in **horizontal** and **vertical** line.
+    - [x] **Align** game objects in **grid**.
 - Control:
-    - [x] Handle game **input**.
+    - [x] Handle keyboard **input**.
+    - [x] Handle mouse **input**.
     - [x] **Move** game object based on input.
 - Collision:
     - [ ] Detect **point collision** between game objects.
@@ -35,6 +41,8 @@ This is an example featuring some useful simple common game development related 
 
 ## 🚀 Development
 
+### 🏁 Setup
+
 1. Clone the repository:
 
     ```bash
@@ -45,7 +53,7 @@ This is an example featuring some useful simple common game development related 
 
 2. Run an **HTTP server** (using any tool of your choice) in the root folder:
 
-    For example, using [**HTTP-Server**](https://www.npmjs.com/package/http-server), in the root folder, you can run:
+    For example, using [**HTTP-Server**](https://github.com/http-party/http-server), in the root folder, you can run:
     ```bash
     http-server -c-1
     ```
@@ -56,6 +64,15 @@ This is an example featuring some useful simple common game development related 
 
 - Runtime: [**Chrome**](https://www.google.com/chrome)
 - Editor: [**Sublime Text**](https://www.sublimetext.com)
+
+## 📚 Learning Resources
+
+- 📕 [Anatomy of a video game](https://developer.mozilla.org/en-US/docs/Games/Anatomy)
+- 📕 [Implementing game control mechanisms](https://developer.mozilla.org/en-US/docs/Games/Techniques/Control_mechanisms)
+- 📕 [2D breakout game using pure JavaScript](https://developer.mozilla.org/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript)
+- 📕 [JavaScript Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)
+- 📕 [Game development](https://developer.mozilla.org/en-US/docs/Games)
+- 📼 [Game-Related Math](https://www.linkedin.com/learning/game-development-foundations-game-related-math)
 
 ## 📄 License
 
