@@ -31,8 +31,8 @@ This is an example featuring some useful simple common game development related 
     - [x] Handle mouse **input**.
     - [x] **Move** game object based on input.
 - Collision:
-    - [ ] Detect **point collision** between game objects.
-    - [ ] Detect **rectangle collision** between game objects.
+    - [x] Detect **point collision** between game objects.
+    - [x] Detect **rectangle collision** between game objects.
     - [ ] Detect **distance** between game objects.
 - Data:
     - [ ] Define game **player** data.

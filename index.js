@@ -22,7 +22,17 @@ new Game({
         margin: 5,
       },
       division: { columns: 10, rows: 10 },
-      center: true
+      center: true,
+    });
+
+    // [ Field ]
+    game.newObj({
+      name: "field",
+      parent: game.obj("map"),
+      color: "skyBlue",
+      size: { w: 128, h: 128 },
+      position: { y: 32 },
+      centerX: true,
     });
 
     // [ Actor ]
@@ -59,7 +69,7 @@ new Game({
 
   onUpdate(game) {
     // Grab objects
-    const { map, actor, enemy, cursorTxt, debugTxt } = game.objs.toObj();
+    const { map, field, actor, enemy, cursorTxt, debugTxt } = game.objs.toObj();
     const key = game.input.key.bind(game.input);
     const mouse = game.input.mouse.bind(game.input);
     const cursor = game.input.cursor;
@@ -75,6 +85,10 @@ new Game({
     if (key("KeyA")) map.moveX(-1);
     if (key("KeyW")) map.moveY(-1);
     if (key("KeyS")) map.moveY(1);
+
+    // ...
+    if (actor.overlaps(field)) field.color = "darkRed";
+    else field.color = field.data.initColor;
 
     // Display cursor position
     cursorTxt.text = `${cursor.x},${cursor.y} 🐭`;

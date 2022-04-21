@@ -218,6 +218,17 @@ export default class GameObject {
     this.center(relatedGameObj, false, true);
   }
 
+  overlaps(relatedGameObj) {
+    if (!(relatedGameObj instanceof GameObject)) return;
+    const { topLeft, topRight, bottomLeft } = relatedGameObj;
+    return (
+      topLeft.x <= this.topRight.x &&
+      topRight.x >= this.topLeft.x &&
+      topLeft.y <= this.bottomLeft.y &&
+      bottomLeft.y >= this.topLeft.y
+    );
+  }
+
   overlapsPoint(point = {}) {
     if (!point) return false;
     const { x = 0, y = 0 } = point;
