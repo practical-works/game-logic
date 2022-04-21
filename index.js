@@ -25,13 +25,23 @@ new Game({
       center: true,
     });
 
-    // [ Field ]
+    // [ Field 1 ]
     game.newObj({
-      name: "field",
+      name: "field1",
       parent: game.obj("map"),
       color: "skyBlue",
       size: { w: 128, h: 128 },
       position: { y: 32 },
+      centerX: true,
+    });
+
+    // [ Field 2 ]
+    game.newObj({
+      name: "field2",
+      parent: game.obj("map"),
+      color: "skyBlue",
+      size: { w: 128, h: 128 },
+      position: { y: game.obj("map").size.h - 160 },
       centerX: true,
     });
 
@@ -69,16 +79,23 @@ new Game({
 
   onUpdate(game) {
     // Grab objects
-    const { map, field, actor, enemy, cursorTxt, debugTxt } = game.objs.toObj();
+    const { map, field1, field2, actor, enemy, cursorTxt, debugTxt } =
+      game.objs.toObj();
     const key = game.input.key.bind(game.input);
     const mouse = game.input.mouse.bind(game.input);
     const cursor = game.input.cursor;
 
     // Control actor
-    if (key("ArrowRight")) actor.moveX(3);
-    if (key("ArrowLeft")) actor.moveX(-3);
-    if (key("ArrowUp")) actor.moveY(-3);
-    if (key("ArrowDown")) actor.moveY(3);
+    actor.data.dPos = { dx: 0, dy: 0 };
+    if (key("ArrowRight")) actor.data.dPos.dx = actor.moveX(3);
+    if (key("ArrowLeft")) actor.data.dPos.dx = actor.moveX(-3);
+    if (key("ArrowUp")) actor.data.dPos.dy = actor.moveY(-3);
+    if (key("ArrowDown")) actor.data.dPos.dy = actor.moveY(3);
+
+    // Keep actor inside map
+    const { dx, dy } = actor.data.dPos;
+    if (!actor.overlapsX(map, true)) actor.moveX(-dx);
+    if (!actor.overlapsY(map, true)) actor.moveY(-dy);
 
     // Control map
     if (key("KeyD")) map.moveX(1);
@@ -86,9 +103,9 @@ new Game({
     if (key("KeyW")) map.moveY(-1);
     if (key("KeyS")) map.moveY(1);
 
-    // ...
-    if (actor.overlaps(field)) field.color = "darkRed";
-    else field.color = field.data.initColor;
+    // Highlight fields on actor step
+    field1.color = actor.overlaps(field1) ? "darkRed" : field1.data.initColor;
+    field2.color = field2.overlaps(actor) ? "darkRed" : field2.data.initColor;
 
     // Display cursor position
     cursorTxt.text = `${cursor.x},${cursor.y} 🐭`;

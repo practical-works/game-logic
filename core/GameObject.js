@@ -195,12 +195,13 @@ export default class GameObject {
   move(x = 0, y = 0) {
     if (x && !isNaN(x)) this.position.x += x;
     if (y && !isNaN(y)) this.position.y += y;
+    return { x, y };
   }
   moveX(x) {
-    this.move(x, 0);
+    return this.move(x, 0).x;
   }
   moveY(y) {
-    this.move(0, y);
+    return this.move(0, y).y;
   }
 
   center(relatedGameObj = this.parent, horiz = true, vert = true) {
@@ -218,15 +219,24 @@ export default class GameObject {
     this.center(relatedGameObj, false, true);
   }
 
-  overlaps(relatedGameObj) {
+  overlaps(relatedGameObj, fully = false, horiz = true, vert = true) {
     if (!(relatedGameObj instanceof GameObject)) return;
     const { topLeft, topRight, bottomLeft } = relatedGameObj;
-    return (
-      topLeft.x <= this.topRight.x &&
-      topRight.x >= this.topLeft.x &&
-      topLeft.y <= this.bottomLeft.y &&
-      bottomLeft.y >= this.topLeft.y
-    );
+    const collidesHorizontally = fully
+      ? topLeft.x <= this.topLeft.x && topRight.x >= this.topRight.x
+      : topLeft.x <= this.topRight.x && topRight.x >= this.topLeft.x;
+    const collidesVertically = fully
+      ? topLeft.y <= this.topLeft.y && bottomLeft.y >= this.bottomLeft.y
+      : topLeft.y <= this.bottomLeft.y && bottomLeft.y >= this.topLeft.y;
+    if (horiz && vert) return collidesHorizontally && collidesVertically;
+    else if (horiz) return collidesHorizontally;
+    else if (vert) return collidesVertically;
+  }
+  overlapsX(relatedGameObj, fully) {
+    return this.overlaps(relatedGameObj, fully, true, false);
+  }
+  overlapsY(relatedGameObj, fully) {
+    return this.overlaps(relatedGameObj, fully, false, true);
   }
 
   overlapsPoint(point = {}) {

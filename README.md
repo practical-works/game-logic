@@ -33,6 +33,7 @@ This is an example featuring some useful simple common game development related 
 - Collision:
     - [x] Detect **point collision** between game objects.
     - [x] Detect **rectangle collision** between game objects.
+    - [x] **Stop** moving game object based on collision.
     - [ ] Detect **distance** between game objects.
 - Data:
     - [ ] Define game **player** data.
