@@ -100,7 +100,7 @@ export default class GameObject {
   }
 
   get hidden() {
-    this._hidden;
+    return this._hidden;
   }
   set hidden(hidden) {
     this._hidden = Boolean(hidden);
@@ -171,6 +171,27 @@ export default class GameObject {
     return { x, y };
   }
 
+  sync(relatedPoint) {
+    if (!relatedPoint) return;
+    if (!this.__initialRelatedPoint)
+      this.__initialRelatedPoint = { ...relatedPoint };
+    if (!this.__initialGlobalPosition)
+      this.__initialGlobalPosition = { ...this.globalPosition };
+    const x =
+      this.__initialGlobalPosition.x +
+      relatedPoint.x -
+      this.__initialRelatedPoint.x;
+    const y =
+      this.__initialGlobalPosition.y +
+      relatedPoint.y -
+      this.__initialRelatedPoint.y;
+    this.globalPosition = { x, y };
+  }
+  unsync() {
+    delete this.__initialRelatedPoint;
+    delete this.__initialGlobalPosition;
+  }
+
   move(x = 0, y = 0) {
     if (x && !isNaN(x)) this.position.x += x;
     if (y && !isNaN(y)) this.position.y += y;
@@ -198,6 +219,7 @@ export default class GameObject {
   }
 
   overlapsPoint(point = {}) {
+    if (!point) return false;
     const { x = 0, y = 0 } = point;
     return (
       x >= this.topLeft.x &&

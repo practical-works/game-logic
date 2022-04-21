@@ -117,41 +117,48 @@ export default class Game {
   }
 
   newObj(options = {}) {
-    const { name, type, ignore } = options;
+    const { name, type } = options;
     if (this._objects.gameObjByName(name))
       throw Error(`A game object named "${name}" already exist.`);
     switch (type) {
       case "text":
         return this._objects.add(new TextGameObject(this, options));
-        break;
       default:
         return this._objects.add(new GameObject(this, options));
-        break;
     }
-    return this._objects[name];
   }
 
   newGrid(options = {}) {
-    // const { cell = { color: "", size: {}, margin: 1 } } = options;
-    // const { size = { columns: 1, rows: 1 } } = options;
-    // const { position = { x: 0, y: 0 } } = options;
-    // const count = size.columns * size.rows;
-    // let column = 0;
-    // let row = 0;
-    // for (let i = 0; i < count; i++) {
-    //   const gameObject = this.createObject(`${name}${i}`, cell);
-    //   gameObject.position.x =
-    //     position.x +
-    //     cell.margin +
-    //     column * (gameObject.size.width + cell.margin);
-    //   gameObject.position.y =
-    //     position.y + cell.margin + row * (gameObject.size.height + cell.margin);
-    //   column++;
-    //   if (column >= size.columns) {
-    //     column = 0;
-    //     row++;
-    //   }
-    // }
+    const { name = "unamedGrid" } = options;
+    const { cell = { color: "", size: {}, margin: 1 } } = options;
+    const { division = { columns: 1, rows: 1 } } = options;
+    const { position = { x: 0, y: 0 } } = options;
+    cell.type = "";
+    const count = division.columns * division.rows;
+    let column = 0;
+    let row = 0;
+    const container = this.newObj({
+      ...options,
+      name,
+      position,
+      hidden: true,
+      size: {
+        w: (cell.size.w + cell.margin) * division.columns + cell.margin,
+        h: (cell.size.h + cell.margin) * division.rows + cell.margin,
+      },
+    });
+    for (let i = 0; i < count; i++) {
+      const gObj = container.childs.add(
+        this.newObj({ ...cell, name: `${name}${i}` })
+      );
+      gObj.position.x = cell.margin + column * (gObj.size.w + cell.margin);
+      gObj.position.y = cell.margin + row * (gObj.size.h + cell.margin);
+      column++;
+      if (column >= division.columns) {
+        column = 0;
+        row++;
+      }
+    }
   }
 
   draw() {

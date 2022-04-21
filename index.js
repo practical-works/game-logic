@@ -13,6 +13,18 @@ new Game({
       center: true,
     });
 
+    // [ Grid ]
+    game.newGrid({
+      name: "grid",
+      cell: {
+        color: "forestGreen",
+        size: { w: 32, h: 32 },
+        margin: 5,
+      },
+      division: { columns: 10, rows: 10 },
+      center: true
+    });
+
     // [ Actor ]
     game.newObj({
       name: "actor",
@@ -75,24 +87,9 @@ new Game({
     enemy.color = enemy.overlapsPoint(cursor) ? "red" : enemy.data.initColor;
 
     // Drag game objects with mouse
-    const leftClick = mouse("left");
-    if (leftClick) {
-      if (map.overlapsPoint(cursor)) {
-        if (!game.data.initCursor) game.data.initCursor = { ...cursor };
-        if (!game.data.initMapGlobPos)
-          game.data.initMapGlobPos = { ...map.globalPosition };
-        const x = game.data.initMapGlobPos.x + cursor.x - game.data.initCursor.x;
-        const y = game.data.initMapGlobPos.y + cursor.y - game.data.initCursor.y;
-        map.globalPosition = { x, y };
-      }
-    } else {
-      delete game.data.initCursor;
-      delete game.data.initMapGlobPos;
-    }
-    if (actor.overlapsPoint(cursor) && leftClick)
-      actor.globalPosition = { x: cursor.x, y: cursor.y };
-    if (enemy.overlapsPoint(cursor) && leftClick)
-      enemy.globalPosition = { x: cursor.x, y: cursor.y };
+    for (const obj of game.objs)
+      if (mouse("left") && obj.overlapsPoint(cursor)) obj.sync(cursor);
+      else obj.unsync();
 
     // Draw all game objects
     game.draw();
