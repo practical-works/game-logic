@@ -223,10 +223,12 @@ export default class GameObject {
     if (!(relatedGameObj instanceof GameObject)) return;
     const { topLeft, topRight, bottomLeft } = relatedGameObj;
     const collidesHorizontally = fully
-      ? topLeft.x <= this.topLeft.x && topRight.x >= this.topRight.x
+      ? (topLeft.x <= this.topLeft.x && topRight.x >= this.topRight.x) ||
+        (this.topLeft.x <= topLeft.x && this.topRight.x >= topRight.x)
       : topLeft.x <= this.topRight.x && topRight.x >= this.topLeft.x;
     const collidesVertically = fully
-      ? topLeft.y <= this.topLeft.y && bottomLeft.y >= this.bottomLeft.y
+      ? (topLeft.y <= this.topLeft.y && bottomLeft.y >= this.bottomLeft.y) ||
+        (this.topLeft.y <= topLeft.y && this.bottomLeft.y >= bottomLeft.y)
       : topLeft.y <= this.bottomLeft.y && bottomLeft.y >= this.topLeft.y;
     if (horiz && vert) return collidesHorizontally && collidesVertically;
     else if (horiz) return collidesHorizontally;

@@ -19,9 +19,9 @@ new Game({
       cell: {
         color: "forestGreen",
         size: { w: 32, h: 32 },
-        margin: 5,
+        margin: 36,
       },
-      division: { columns: 10, rows: 10 },
+      division: { columns: 6, rows: 6 },
       center: true,
     });
 
@@ -30,8 +30,8 @@ new Game({
       name: "field1",
       parent: game.obj("map"),
       color: "skyBlue",
-      size: { w: 128, h: 128 },
-      position: { y: 32 },
+      size: { w: 128, h: 64 },
+      position: { y: 33 },
       centerX: true,
     });
 
@@ -40,8 +40,8 @@ new Game({
       name: "field2",
       parent: game.obj("map"),
       color: "skyBlue",
-      size: { w: 128, h: 128 },
-      position: { y: game.obj("map").size.h - 160 },
+      size: { w: 128, h: 64 },
+      position: { y: game.obj("map").size.h - 97 },
       centerX: true,
     });
 
@@ -86,16 +86,32 @@ new Game({
     const cursor = game.input.cursor;
 
     // Control actor
-    actor.data.dPos = { dx: 0, dy: 0 };
-    if (key("ArrowRight")) actor.data.dPos.dx = actor.moveX(3);
-    if (key("ArrowLeft")) actor.data.dPos.dx = actor.moveX(-3);
-    if (key("ArrowUp")) actor.data.dPos.dy = actor.moveY(-3);
-    if (key("ArrowDown")) actor.data.dPos.dy = actor.moveY(3);
+    const speed = 5;
+    const actorStep = { x: 0, y: 0 };
+    if (key("ArrowRight")) actorStep.x = 1;
+    if (key("ArrowLeft")) actorStep.x = -1;
+    if (key("ArrowUp")) actorStep.y = -1;
+    if (key("ArrowDown")) actorStep.y = 1;
 
-    // Keep actor inside map
-    const { dx, dy } = actor.data.dPos;
-    if (!actor.overlapsX(map, true)) actor.moveX(-dx);
-    if (!actor.overlapsY(map, true)) actor.moveY(-dy);
+    // Move actor inside map only
+    if (actorStep.x) {
+      for (let i = 0; i < speed; i++) {
+        actor.moveX(actorStep.x);
+        if (!actor.overlapsX(map, true)) {
+          actor.moveX(-actorStep.x);
+          break;
+        }
+      }
+    }
+    if (actorStep.y) {
+      for (let i = 0; i < speed; i++) {
+        actor.moveY(actorStep.y);
+        if (!actor.overlapsY(map, true)) {
+          actor.moveY(-actorStep.y);
+          break;
+        }
+      }
+    }
 
     // Control map
     if (key("KeyD")) map.moveX(1);
