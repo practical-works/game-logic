@@ -33,6 +33,10 @@ export default class GameList {
     return this._gameObjects.length;
   }
 
+  gameObjByIndex(i) {
+    return this._gameObjects[i];
+  }
+
   gameObjById(id) {
     return this._gameObjects.find((gObj) => gObj.id === id);
   }

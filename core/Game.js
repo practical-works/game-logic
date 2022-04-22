@@ -159,6 +159,7 @@ export default class Game {
         row++;
       }
     }
+    return container;
   }
 
   draw() {

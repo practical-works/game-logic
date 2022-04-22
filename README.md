@@ -38,8 +38,8 @@ This is an example featuring some useful simple common game development related 
     - [x] **Stop** moving game object based on collision.
     - [x] Detect **distance** between game objects.
 - Data:
-    - [ ] Define game **player** data.
-    - [ ] Calculate **health percentage** of player.
+    - [x] Define game **player** data.
+    - [x] Calculate **health percentage** of player.
     - [ ] Calculate **experience** of player based on **level**.
 
 ## 🚀 Development
