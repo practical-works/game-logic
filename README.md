@@ -8,6 +8,8 @@ This is an example featuring some useful simple common game development related 
 
 [**🌐 View Live**](https://practical-works.github.io/game-logic)
 
+![Screenshot](./screenshot.gif?raw=true)
+
 ## 🎯 Achieved Objectives
 
 - Base:
@@ -34,7 +36,7 @@ This is an example featuring some useful simple common game development related 
     - [x] Detect **point collision** between game objects.
     - [x] Detect **rectangle collision** between game objects.
     - [x] **Stop** moving game object based on collision.
-    - [ ] Detect **distance** between game objects.
+    - [x] Detect **distance** between game objects.
 - Data:
     - [ ] Define game **player** data.
     - [ ] Calculate **health percentage** of player.
