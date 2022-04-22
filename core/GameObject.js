@@ -16,12 +16,13 @@ export default class GameObject {
   _hidden = false;
 
   constructor(game, options = {}) {
-    const { name, size, hotspot, position, color, hidden } = options;
+    const { name, data, size, hotspot, position, color, hidden } = options;
     const { parent, childs, centerX, centerY, center } = options;
     GameObject._count++;
     this._id = GameObject._count - 1;
     this.game = game;
     this.name = name || `unamedGameObject${this.id}`;
+    this.data = data;
     this.size = size;
     this.hotspot = hotspot;
     this.position = position;
@@ -192,7 +193,49 @@ export default class GameObject {
     delete this.__initialGlobalPosition;
   }
 
+  moveIf(x, y, conditionFn) {
+    if (!conditionFn || typeof conditionFn !== "function")
+      conditionFn = () => true;
+    const totalSteps = { x: 0, y: 0 };
+    const step = { x: 0, y: 0 };
+    const performedSteps = { x: 0, y: 0 };
+    if (x) {
+      totalSteps.x = Math.abs(x);
+      step.x = x / totalSteps.x;
+      while (performedSteps.x < totalSteps.x) {
+        performedSteps.x++;
+        this.moveX(step.x);
+        if (!conditionFn(performedSteps)) {
+          this.moveX(-step.x);
+          performedSteps.x--;
+          break;
+        }
+      }
+    }
+    if (y) {
+      totalSteps.y = Math.abs(y);
+      step.y = y / totalSteps.y;
+      while (performedSteps.y < totalSteps.y) {
+        performedSteps.y++;
+        this.moveY(step.y);
+        if (!conditionFn(performedSteps)) {
+          this.moveY(-step.y);
+          performedSteps.y--;
+          break;
+        }
+      }
+    }
+    return performedSteps;
+  }
+  moveXIf(x, conditionFn) {
+    return this.moveIf(x, 0, conditionFn).x;
+  }
+  moveYIf(y, conditionFn) {
+    return this.moveIf(0, y, conditionFn).y;
+  }
+
   move(x = 0, y = 0) {
+    if (!x && !y) return;
     if (x && !isNaN(x)) this.position.x += x;
     if (y && !isNaN(y)) this.position.y += y;
     return { x, y };
@@ -220,19 +263,24 @@ export default class GameObject {
   }
 
   overlaps(relatedGameObj, fully = false, horiz = true, vert = true) {
-    if (!(relatedGameObj instanceof GameObject)) return;
-    const { topLeft, topRight, bottomLeft } = relatedGameObj;
-    const collidesHorizontally = fully
-      ? (topLeft.x <= this.topLeft.x && topRight.x >= this.topRight.x) ||
-        (this.topLeft.x <= topLeft.x && this.topRight.x >= topRight.x)
-      : topLeft.x <= this.topRight.x && topRight.x >= this.topLeft.x;
-    const collidesVertically = fully
-      ? (topLeft.y <= this.topLeft.y && bottomLeft.y >= this.bottomLeft.y) ||
-        (this.topLeft.y <= topLeft.y && this.bottomLeft.y >= bottomLeft.y)
-      : topLeft.y <= this.bottomLeft.y && bottomLeft.y >= this.topLeft.y;
-    if (horiz && vert) return collidesHorizontally && collidesVertically;
-    else if (horiz) return collidesHorizontally;
-    else if (vert) return collidesVertically;
+    if (relatedGameObj instanceof GameObject) {
+      const { topLeft, topRight, bottomLeft } = relatedGameObj;
+      const collidesHorizontally = fully
+        ? (topLeft.x <= this.topLeft.x && topRight.x >= this.topRight.x) ||
+          (this.topLeft.x <= topLeft.x && this.topRight.x >= topRight.x)
+        : topLeft.x <= this.topRight.x && topRight.x >= this.topLeft.x;
+      const collidesVertically = fully
+        ? (topLeft.y <= this.topLeft.y && bottomLeft.y >= this.bottomLeft.y) ||
+          (this.topLeft.y <= topLeft.y && this.bottomLeft.y >= bottomLeft.y)
+        : topLeft.y <= this.bottomLeft.y && bottomLeft.y >= this.topLeft.y;
+      if (horiz && vert) return collidesHorizontally && collidesVertically;
+      else if (horiz) return collidesHorizontally;
+      else if (vert) return collidesVertically;
+    } else if (relatedGameObj instanceof GameList) {
+      for (const gObj of relatedGameObj)
+        if (this.overlaps(gObj, fully, horiz, vert)) return true;
+      return false;
+    }
   }
   overlapsX(relatedGameObj, fully) {
     return this.overlaps(relatedGameObj, fully, true, false);
@@ -250,6 +298,25 @@ export default class GameObject {
       y >= this.topLeft.y &&
       y <= this.bottomLeft.y
     );
+  }
+
+  distance(relatedGameObj) {
+    if (!(relatedGameObj instanceof GameObject)) return NaN;
+    const { x, y } = relatedGameObj.position;
+    const dx = Math.abs(x - this.position.x);
+    const dy = Math.abs(y - this.position.y);
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  drawDistance(relatedGameObj) {
+    if (!(relatedGameObj instanceof GameObject)) return;
+    const { x, y } = relatedGameObj.globalPosition;
+    const ctx = this.game.$context;
+    ctx.beginPath();
+    ctx.strokeStyle = "white";
+    ctx.moveTo(this.globalPosition.x, this.globalPosition.y);
+    ctx.lineTo(x, y);
+    ctx.stroke();
   }
 
   draw() {

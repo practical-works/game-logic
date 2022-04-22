@@ -13,36 +13,28 @@ new Game({
       center: true,
     });
 
+    // [ Fields ]
+    for (let i = 0; i < 2; i++)
+      game.newObj({
+        name: `field${i + 1}`,
+        parent: game.obj("map"),
+        color: "skyBlue",
+        size: { w: 128, h: 64 },
+        centerX: true,
+      });
+    game.obj("field1").moveY(33);
+    game.obj("field2").moveY(game.obj("map").size.h - 97);
+
     // [ Grid ]
     game.newGrid({
-      name: "grid",
+      name: "blocks",
       cell: {
         color: "forestGreen",
         size: { w: 32, h: 32 },
-        margin: 36,
+        margin: 41,
       },
       division: { columns: 6, rows: 6 },
       center: true,
-    });
-
-    // [ Field 1 ]
-    game.newObj({
-      name: "field1",
-      parent: game.obj("map"),
-      color: "skyBlue",
-      size: { w: 128, h: 64 },
-      position: { y: 33 },
-      centerX: true,
-    });
-
-    // [ Field 2 ]
-    game.newObj({
-      name: "field2",
-      parent: game.obj("map"),
-      color: "skyBlue",
-      size: { w: 128, h: 64 },
-      position: { y: game.obj("map").size.h - 97 },
-      centerX: true,
     });
 
     // [ Actor ]
@@ -53,6 +45,9 @@ new Game({
       size: { w: 32, h: 32 },
       hotspot: { x: 16, y: 16 },
       center: true,
+      data: {
+        speed: 3,
+      },
     });
 
     // [ Enemy ]
@@ -62,7 +57,7 @@ new Game({
       color: "indianRed",
       size: { w: 32, h: 32 },
       hotspot: { x: 16, y: 16 },
-      position: { x: game.obj("map").size.w - 32, y: 32 },
+      position: { x: game.obj("map").size.w - 52, y: 52 },
     });
 
     // [ Cursor Text ]
@@ -79,39 +74,22 @@ new Game({
 
   onUpdate(game) {
     // Grab objects
-    const { map, field1, field2, actor, enemy, cursorTxt, debugTxt } =
+    const { map, blocks, field1, field2, actor, enemy, cursorTxt, debugTxt } =
       game.objs.toObj();
     const key = game.input.key.bind(game.input);
     const mouse = game.input.mouse.bind(game.input);
     const cursor = game.input.cursor;
 
-    // Control actor
-    const speed = 5;
-    const actorStep = { x: 0, y: 0 };
-    if (key("ArrowRight")) actorStep.x = 1;
-    if (key("ArrowLeft")) actorStep.x = -1;
-    if (key("ArrowUp")) actorStep.y = -1;
-    if (key("ArrowDown")) actorStep.y = 1;
+    // Define obstacles for actor
+    const actorCanMove = () =>
+      actor.overlaps(map, true) && !actor.overlaps(blocks.childs);
 
-    // Move actor inside map only
-    if (actorStep.x) {
-      for (let i = 0; i < speed; i++) {
-        actor.moveX(actorStep.x);
-        if (!actor.overlapsX(map, true)) {
-          actor.moveX(-actorStep.x);
-          break;
-        }
-      }
-    }
-    if (actorStep.y) {
-      for (let i = 0; i < speed; i++) {
-        actor.moveY(actorStep.y);
-        if (!actor.overlapsY(map, true)) {
-          actor.moveY(-actorStep.y);
-          break;
-        }
-      }
-    }
+    // Control actor
+    const speed = actor.data.speed;
+    if (key("ArrowRight")) actor.moveXIf(speed, actorCanMove);
+    if (key("ArrowLeft")) actor.moveXIf(-speed, actorCanMove);
+    if (key("ArrowUp")) actor.moveYIf(-speed, actorCanMove);
+    if (key("ArrowDown")) actor.moveYIf(speed, actorCanMove);
 
     // Control map
     if (key("KeyD")) map.moveX(1);
@@ -140,5 +118,8 @@ new Game({
 
     // Draw all game objects
     game.draw();
+
+    // Draw distance between actor and enemy
+    actor.drawDistance(enemy);
   },
 });
