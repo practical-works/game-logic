@@ -14,11 +14,14 @@ export default function onUpdate(game) {
   map.data.movement.control();
 
   // Highlight fields and give EXP on actor step
-  const actorOverlapsField0 = actor.overlaps(field0);
-  const actorOverlapsField1 = actor.overlaps(field1);
-  if (actorOverlapsField0 || actorOverlapsField1) actor.data.experience.add(1);
-  field0.color = actorOverlapsField0 ? "#4d9be6" : field0.data.initColor;
-  field1.color = actorOverlapsField1 ? "#4d9be6" : field1.data.initColor;
+  if (actor.overlaps(field0)) {
+    field0.color = "#4d9be6";
+    actor.data.experience.add(1);
+  } else field0.color = field0.data.initColor;
+  if (actor.overlaps(field1)) {
+    field1.color = "#0b5e65";
+    actor.data.health.add(1);
+  }else field1.color = field1.data.initColor;
 
   // Display health bar
   healthBar.data.display();
@@ -43,8 +46,7 @@ export default function onUpdate(game) {
   }
 
   // Damage actor on enemy touch
-  if (actor.overlaps(enemy))
-    if (actor.data.health.current > 0) actor.data.health.current -= 1;
+  if (actor.overlaps(enemy)) actor.data.health.sub(1);
 
   // Draw all game objects
   game.draw();

@@ -31,6 +31,14 @@ export default function actor(game) {
     get percent() {
       return Math.floor(this.ratio * 100);
     },
+    add(hp) {
+      if (isNaN(hp)) return;
+      if (this.current < this.max) this.current += 1;
+    },
+    sub(hp) {
+      if (isNaN(hp)) return;
+      if (this.current > 0) this.current -= 1;
+    }
   };
   actor.data.experience = {
     current: 0,
