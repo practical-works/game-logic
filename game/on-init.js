@@ -4,6 +4,7 @@ import blocks from "./objs/blocks.js";
 import actor from "./objs/actor.js";
 import enemy from "./objs/enemy.js";
 import healthBar from "./objs/health-bar.js";
+import levelBar from "./objs/level-bar.js";
 import cursorTxt from "./objs/cursor-txt.js";
 
 export default function onInit(game) {
@@ -13,6 +14,7 @@ export default function onInit(game) {
   actor(game);
   enemy(game);
   healthBar(game);
+  levelBar(game);
   cursorTxt(game);
   for (const gObj of game.objs) gObj.data.initColor = gObj.color;
 }

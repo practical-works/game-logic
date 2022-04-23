@@ -3,8 +3,9 @@ export default function healthBar(game) {
   const healthBar = game.newObj({
     name: "healthBar",
     color: "grey",
-    size: { w: 200, h: 22 },
-    position: { x: 10, y: 10 },
+    size: { w: 400, h: 25 },
+    position: { y: 10 },
+    centerX: true
   });
   const healthFill = game.newObj({
     name: "healthFill",
@@ -15,7 +16,7 @@ export default function healthBar(game) {
     name: "healthTxt",
     parent: healthBar,
     type: "text",
-    font: "bold 18px consolas",
+    font: "bold 15px consolas",
   });
   healthBar.childs.addRange([healthFill, healthTxt]);
   healthBar.data = {
@@ -27,10 +28,11 @@ export default function healthBar(game) {
       healthTxt.center();
     },
     display() {
-      healthFill.size.w = health.getRatio() * healthBar.size.w;
-      healthTxt.text = `${health.current}/${
+      healthFill.color = health.ratio > 0.5 ? "green" : "red";
+      healthFill.size.w = health.ratio * healthBar.size.w;
+      healthTxt.text = `❤️ ${health.current}/${
         health.max
-      } (${health.getPercent()}%)`;
+      } (${health.percent}%)`;
       this.centerTxt();
     },
   };

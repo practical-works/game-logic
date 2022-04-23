@@ -40,7 +40,7 @@ This is an example featuring some useful simple common game development related 
 - Data:
     - [x] Define game **player** data.
     - [x] Calculate **health percentage** of player.
-    - [ ] Calculate **experience** of player based on **level**.
+    - [x] Calculate **experience** of player based on **level**.
 
 ## 🚀 Development
 

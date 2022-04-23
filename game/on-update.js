@@ -2,7 +2,7 @@ export default function onUpdate(game) {
   // Grab game objects
   const gameObjs = game.objs.toObj();
   const { map, blocks, field0, field1 } = gameObjs;
-  const { actor, enemy, healthBar, cursorTxt } = gameObjs;
+  const { actor, enemy, healthBar, levelBar, cursorTxt } = gameObjs;
   const key = game.input.key.bind(game.input);
   const mouse = game.input.mouse.bind(game.input);
   const cursor = game.input.cursor;
@@ -13,12 +13,19 @@ export default function onUpdate(game) {
   // Control map with keyboard
   map.data.movement.control();
 
-  // Highlight fields on actor step
-  field0.color = actor.overlaps(field0) ? "darkRed" : field0.data.initColor;
-  field1.color = field1.overlaps(actor) ? "darkRed" : field1.data.initColor;
+  // Highlight fields and give EXP on actor step
+  const actorOverlapsField0 = actor.overlaps(field0);
+  const actorOverlapsField1 = actor.overlaps(field1);
+  if (actorOverlapsField0 || actorOverlapsField1)
+    actor.data.experience.add(1);
+  field0.color = actorOverlapsField0 ? "royalBlue" : field0.data.initColor;
+  field1.color = actorOverlapsField1 ? "royalBlue" : field1.data.initColor;
 
   // Display health bar
   healthBar.data.display();
+
+  // Display level bar
+  levelBar.data.display();
 
   // Display cursor position text
   cursorTxt.data.display();
