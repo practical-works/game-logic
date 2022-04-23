@@ -2,7 +2,7 @@ export default function blocks(game) {
   const blocks = game.newGrid({
     name: "blocks",
     cell: {
-      color: "forestGreen",
+      color: "#625565",
       size: { w: 32, h: 32 },
       margin: 41,
     },

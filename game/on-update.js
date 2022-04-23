@@ -18,8 +18,8 @@ export default function onUpdate(game) {
   const actorOverlapsField1 = actor.overlaps(field1);
   if (actorOverlapsField0 || actorOverlapsField1)
     actor.data.experience.add(1);
-  field0.color = actorOverlapsField0 ? "royalBlue" : field0.data.initColor;
-  field1.color = actorOverlapsField1 ? "royalBlue" : field1.data.initColor;
+  field0.color = actorOverlapsField0 ? "#4d9be6" : field0.data.initColor;
+  field1.color = actorOverlapsField1 ? "#4d9be6" : field1.data.initColor;
 
   // Display health bar
   healthBar.data.display();
@@ -31,9 +31,9 @@ export default function onUpdate(game) {
   cursorTxt.data.display();
 
   // Highlight game objects on cursor hover
-  map.color = map.overlapsPoint(cursor) ? "green" : map.data.initColor;
-  actor.color = actor.overlapsPoint(cursor) ? "yellow" : actor.data.initColor;
-  enemy.color = enemy.overlapsPoint(cursor) ? "red" : enemy.data.initColor;
+  map.color = map.overlapsPoint(cursor) ? "#54485e" : map.data.initColor;
+  actor.color = actor.overlapsPoint(cursor) ? "#f79617" : actor.data.initColor;
+  enemy.color = enemy.overlapsPoint(cursor) ? "#e83b3b" : enemy.data.initColor;
 
   // Drag game objects with mouse
   for (const gObj of game.objs)

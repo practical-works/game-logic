@@ -3,7 +3,7 @@ export default function fields(game) {
   const template = (name) => ({
     name,
     parent: map,
-    color: "skyBlue",
+    color: "#966c6c",
     size: { w: 128, h: 64 },
     centerX: true,
   });

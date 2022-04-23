@@ -2,7 +2,7 @@ export default function map(game) {
   const key = game.input.key.bind(game.input);
   const map = game.newObj({
     name: "map",
-    color: "darkGreen",
+    color: "#3e3546",
     size: { w: 400, h: 400 },
     center: true,
   });

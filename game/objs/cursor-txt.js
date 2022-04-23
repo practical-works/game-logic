@@ -3,7 +3,7 @@ export default function cursorTxt(game) {
   const cursorTxt = game.newObj({
     name: "cursorTxt",
     type: "text",
-    color: "#FFD580",
+    color: "#fbff86",
     font: "20px consolas",
   });
   cursorTxt.data.display = () => {

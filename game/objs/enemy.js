@@ -3,7 +3,7 @@ export default function enemy(game) {
   return game.newObj({
     name: "enemy",
     parent: map,
-    color: "indianRed",
+    color: "#ae2334",
     size: { w: 32, h: 32 },
     hotspot: { x: 16, y: 16 },
     position: { x: map.size.w - 52, y: 52 },

@@ -289,15 +289,14 @@ export default class GameObject {
     return this.overlaps(relatedGameObj, fully, false, true);
   }
 
-  overlapsPoint(point = {}) {
+  overlapsPoint(point, horiz = true, vert = true) {
     if (!point) return false;
     const { x = 0, y = 0 } = point;
-    return (
-      x >= this.topLeft.x &&
-      x <= this.topRight.x &&
-      y >= this.topLeft.y &&
-      y <= this.bottomLeft.y
-    );
+    const collidesHorizontally = x >= this.topLeft.x && x <= this.topRight.x;
+    const collidesVertically = y >= this.topLeft.y && y <= this.bottomLeft.y;
+    if (horiz && vert) return collidesHorizontally && collidesVertically;
+    else if (horiz) return collidesHorizontally;
+    else if (vert) return collidesVertically;
   }
 
   distance(relatedGameObj) {

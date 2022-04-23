@@ -2,14 +2,14 @@ export default function healthBar(game) {
   const { health } = game.obj("actor").data;
   const healthBar = game.newObj({
     name: "healthBar",
-    color: "grey",
+    color: "#625565",
     size: { w: 400, h: 25 },
     position: { y: 10 },
     centerX: true
   });
   const healthFill = game.newObj({
     name: "healthFill",
-    color: "green",
+    color: "#0b5e65",
     size: healthBar.size,
   });
   const healthTxt = game.newObj({
@@ -28,7 +28,9 @@ export default function healthBar(game) {
       healthTxt.center();
     },
     display() {
-      healthFill.color = health.ratio > 0.5 ? "green" : "red";
+      if (health.ratio >= 0.5) healthFill.color = "#0b5e65";
+      else if (health.ratio >= 0.2) healthFill.color = "#f9c22b";
+      else healthFill.color = "#b33831";
       healthFill.size.w = health.ratio * healthBar.size.w;
       healthTxt.text = `❤️ ${health.current}/${
         health.max

@@ -9,19 +9,21 @@ export default class Game {
   _data = {};
   _loopId = 0;
   _title = "";
+  _color = "#111";
   _objects = new GameList();
   _size = { w: 640, h: 480 };
   _onInit = (gObj) => undefined;
   _onUpdate = (gObj) => undefined;
 
   constructor(options = {}) {
-    const { title, size, objs, onInit, onUpdate } = options;
+    const { title, color, size, objs, onInit, onUpdate } = options;
     this.title = title;
     this.size = size;
     this.objs = objs;
     this.onInit = onInit;
     this.onUpdate = onUpdate;
     this._createCanvas();
+    this.color = color;
     this._input.game = this;
     this.onInit(this);
     this._startLoop();
@@ -46,7 +48,15 @@ export default class Game {
     return this._title;
   }
   set title(title) {
-    window.document.title = this._title = title;
+    window.document.title = this._title = String(title);
+  }
+
+  get color() {
+    return this._color;
+  }
+  set color(color) {
+    if (color && this.$context)
+      this.$context.canvas.style.backgroundColor = this._color = String(color);
   }
 
   get size() {
@@ -85,7 +95,7 @@ export default class Game {
     canvas.width = this.size.w;
     canvas.height = this.size.h;
     canvas.style.border = "1px solid grey";
-    canvas.style.backgroundColor = "#111";
+    canvas.style.backgroundColor = this.color;
     canvas.style.display = "block";
     canvas.style.margin = "0 auto";
     window.document.body.appendChild(canvas);

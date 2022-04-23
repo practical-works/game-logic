@@ -2,20 +2,20 @@ export default function levelBar(game) {
   const { experience } = game.obj("actor").data;
   const levelBar = game.newObj({
     name: "levelBar",
-    color: "grey",
+    color: "#625565",
     size: { w: 400, h: 25 },
     position: { y: game.size.h - 35 },
     centerX: true,
   });
   const levelFill = game.newObj({
     name: "levelFill",
-    color: "royalBlue",
+    color: "#4d9be6",
     size: levelBar.size,
   });
   const levelTxt = game.newObj({
     name: "levelTxt",
     parent: levelBar,
-    color: "blue",
+    // color: "blue",
     type: "text",
     font: "bold 15px consolas",
   });

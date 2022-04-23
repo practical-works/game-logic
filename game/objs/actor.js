@@ -5,7 +5,7 @@ export default function actor(game) {
   const actor = game.newObj({
     name: "actor",
     parent: map,
-    color: "orange",
+    color: "#ea4f36",
     size: { w: 32, h: 32 },
     hotspot: { x: 16, y: 16 },
     center: true,
@@ -23,8 +23,8 @@ export default function actor(game) {
     },
   };
   actor.data.health = {
-    max: 1000,
-    current: 1000,
+    max: 100,
+    current: 100,
     get ratio() {
       return this.current / this.max;
     },
