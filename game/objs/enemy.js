@@ -6,6 +6,6 @@ export default function enemy(game) {
     color: "#ae2334",
     size: { w: 32, h: 32 },
     hotspot: { x: 16, y: 16 },
-    position: { x: map.size.w - 52, y: 52 },
+    position: { x: map.size.w - 53, y: map.size.h / 2 },
   });
 }

@@ -4,11 +4,13 @@
 [![HTML5](https://img.shields.io/badge/html5-blue?logo=html5)](https://github.com/topics/html5)
 [![JavaScript](https://img.shields.io/badge/javaScript-blue?logo=javascript)](https://github.com/topics/javascript)
 
-This is an example featuring some useful simple common game development related logic.
+This is an example featuring some useful simple common game development related logic.<br />
+It features some techniques for game core logic structuring, layout manipulation, control handling, collision detection, and data calculation.
 
 [**🌐 View Live**](https://practical-works.github.io/game-logic)
 
-![Screenshot](./screenshot.gif?raw=true)
+![Screenshot1](./screenshot1.gif?raw=true)
+![Screenshot2](./screenshot2.gif?raw=true)
 
 ## 🎯 Achieved Objectives
 
