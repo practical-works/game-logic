@@ -13,6 +13,16 @@ export default class GameList {
     for (const gObj of this._gameObjects) yield gObj;
   }
 
+  get asReverse() {
+    return [...this._gameObjects].reverse();
+  }
+
+  get asObject() {
+    const gListObj = {};
+    for (const gObj of this._gameObjects) gListObj[gObj.name] = gObj;
+    return gListObj;
+  }
+
   get onAdd() {
     return this._onAdd;
   }
@@ -74,11 +84,5 @@ export default class GameList {
       this.onRemove(removedGameObject);
       return removedGameObject;
     }
-  }
-
-  toObj() {
-    const gListObj = {};
-    for (const gObj of this._gameObjects) gListObj[gObj.name] = gObj;
-    return gListObj;
   }
 }
