@@ -109,10 +109,10 @@ export default class Game {
   }
 
   _startLoop() {
-    const update = () => {
+    const update = (time) => {
       this._loopId = window.requestAnimationFrame(update);
       this._clearCanvas();
-      this.onUpdate(this);
+      this.onUpdate(this, time || 0);
     };
     update();
   }

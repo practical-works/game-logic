@@ -48,17 +48,26 @@ export default function onUpdate(game) {
   // Damage actor on enemy touch
   if (actor.overlaps(enemy)) actor.data.health.sub(1);
 
-  // Move enemy with tween
-  if (key("Space")) enemy.data.tweenTime = 0;
-  if (enemy.data.tweenTime <= 1000)
-    enemy.moveWithTween(
-      cursor.x - enemy.globalPosition.x,
-      cursor.y - enemy.globalPosition.y,
-      enemy.data.tweenTime++,
-      1000
-    );
-  else
-    delete enemy.data.tweenTime;
+  // Move enemy with tween animation effect
+  if (key("Space"))
+    enemy.data.tween = {
+      currentTime: 0,
+      timeStep: 20,
+      duration: 1000,
+      targetPosition: { ...cursor },
+    };
+  if (enemy.data.tween) {
+    const { currentTime, duration, targetPosition } = enemy.data.tween;
+    if (currentTime <= duration) {
+      enemy.moveWithTween(
+        targetPosition.x - enemy.globalPosition.x,
+        targetPosition.y - enemy.globalPosition.y,
+        currentTime,
+        duration
+      );
+      enemy.data.tween.currentTime += enemy.data.tween.timeStep;
+    } else delete enemy.data.tween;
+  }
 
   // Draw all game objects
   game.draw();
