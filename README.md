@@ -43,6 +43,7 @@ It features some techniques for game core logic structuring, layout manipulation
     - [x] Define game **player** data.
     - [x] Calculate **health percentage** of player.
     - [x] Calculate **experience** of player based on **level**.
+    - [x] Move game object with **tween** animation effect.
 
 ## 🚀 Development
 

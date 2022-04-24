@@ -21,7 +21,7 @@ export default function onUpdate(game) {
   if (actor.overlaps(field1)) {
     field1.color = "#0b5e65";
     actor.data.health.add(1);
-  }else field1.color = field1.data.initColor;
+  } else field1.color = field1.data.initColor;
 
   // Display health bar
   healthBar.data.display();
@@ -47,6 +47,18 @@ export default function onUpdate(game) {
 
   // Damage actor on enemy touch
   if (actor.overlaps(enemy)) actor.data.health.sub(1);
+
+  // Move enemy with tween
+  if (key("Space")) enemy.data.tweenTime = 0;
+  if (enemy.data.tweenTime <= 1000)
+    enemy.moveWithTween(
+      cursor.x - enemy.globalPosition.x,
+      cursor.y - enemy.globalPosition.y,
+      enemy.data.tweenTime++,
+      1000
+    );
+  else
+    delete enemy.data.tweenTime;
 
   // Draw all game objects
   game.draw();

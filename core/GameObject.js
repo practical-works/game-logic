@@ -172,6 +172,14 @@ export default class GameObject {
     return { x, y };
   }
 
+  setPosition(x, y) {
+    return (this.position = { x, y });
+  }
+
+  setGlobalPosition(x, y) {
+    return (this.globalPositionposition = { x, y });
+  }
+
   sync(relatedPoint) {
     if (!relatedPoint) return;
     if (!this.__initialRelatedPoint)
@@ -234,8 +242,20 @@ export default class GameObject {
     return this.moveIf(0, y, conditionFn).y;
   }
 
+  moveWithTween(x, y, currentTime, duration, tweenFn) {
+    if (isNaN(currentTime) || currentTime < 0) currentTime = 0;
+    if (isNaN(duration) || duration < 0) duration = 1000;
+    if (currentTime > duration) currentTime = duration;
+    if (tweenFn !== "function")
+      tweenFn = (x, y, currentTime, duration) => ({
+        x: (x * currentTime) / duration,
+        y: (y * currentTime) / duration,
+      });
+    const step = tweenFn(x, y, currentTime, duration);
+    this.move(step.x, step.y);
+  }
+
   move(x = 0, y = 0) {
-    if (!x && !y) return;
     if (x && !isNaN(x)) this.position.x += x;
     if (y && !isNaN(y)) this.position.y += y;
     return { x, y };
