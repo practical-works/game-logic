@@ -2,8 +2,9 @@ import GameObject from "./GameObject.js";
 import TextGameObject from "./TextGameObject.js";
 import GameList from "./GameList.js";
 import GameInput from "./GameInput.js";
+import Size from "./geometry/Size.js";
 
-export default class Game {
+export default class Game extends GameObject {
   _context;
   _input = new GameInput();
   _data = {};
@@ -11,14 +12,12 @@ export default class Game {
   _title = "";
   _color = "#111";
   _objects = new GameList();
-  _size = { w: 640, h: 480 };
-  _onInit = (gObj) => undefined;
-  _onUpdate = (gObj) => undefined;
 
   constructor(options = {}) {
-    const { title, color, size, objs, onInit, onUpdate } = options;
+    if (!options.size) options.size = new Size(640, 480);
+    super(null, options);
+    const { title, color, objs, onInit, onUpdate } = options;
     this.title = title;
-    this.size = size;
     this.objs = objs;
     this.onInit = onInit;
     this.onUpdate = onUpdate;
@@ -59,35 +58,12 @@ export default class Game {
       this.$context.canvas.style.backgroundColor = this._color = String(color);
   }
 
-  get size() {
-    return this._size;
-  }
-  set size(size) {
-    const { w, h } = size;
-    this.size.w = w;
-    this.size.h = h;
-  }
-
   get objs() {
     return this._objects;
   }
   set objs(gameObjects) {
     if (!(gameObjects instanceof GameList)) return;
     this._objects = gameObjects;
-  }
-
-  get onInit() {
-    return this._onInit;
-  }
-  set onInit(onInit) {
-    if (typeof onInit === "function") this._onInit = onInit;
-  }
-
-  get onUpdate() {
-    return this._onUpdate;
-  }
-  set onUpdate(onUpdate) {
-    if (typeof onUpdate === "function") this._onUpdate = onUpdate;
   }
 
   _createCanvas() {
@@ -112,6 +88,7 @@ export default class Game {
     const update = (time) => {
       this._loopId = window.requestAnimationFrame(update);
       this._clearCanvas();
+      for (const obj of this._objects) obj.onUpdate(this, time || 0);
       this.onUpdate(this, time || 0);
     };
     update();
