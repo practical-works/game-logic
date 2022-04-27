@@ -44,6 +44,7 @@ It features some techniques for game core logic structuring, layout manipulation
     - [x] Calculate **health percentage** of player.
     - [x] Calculate **experience** of player based on **level**.
     - [x] Move game object with **tween** animation effect.
+    - [x] Move game object with **acceleration** and **deceleration** effect.
 
 ## 🎇 Example's Features
 

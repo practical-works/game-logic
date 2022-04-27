@@ -11,15 +11,51 @@ export default function actor(game) {
     center: true,
   });
   actor.data.movement = {
-    speed: 3,
+    axe: { horizontal: false, vertical: false },
+    speed: { x: 0, y: 0 },
+    direction: { x: 1, y: -1 },
+    maxSpeed: { x: 5, y: 5 },
+    acceleration: { x: 0.1, y: 0.1 },
+    deceleration: { x: 0.05, y: 0.05 },
     canMove() {
       return actor.overlaps(map, true) && !actor.overlaps(blocks.childs);
     },
     control() {
-      if (key("ArrowRight")) actor.moveXIf(this.speed, this.canMove);
-      if (key("ArrowLeft")) actor.moveXIf(-this.speed, this.canMove);
-      if (key("ArrowUp")) actor.moveYIf(-this.speed, this.canMove);
-      if (key("ArrowDown")) actor.moveYIf(this.speed, this.canMove);
+      if (key("ArrowRight")) {
+        this.axe.horizontal = true;
+        this.direction.x = 1;
+      } else if (key("ArrowLeft")) {
+        this.axe.horizontal = true;
+        this.direction.x = -1;
+      } else this.axe.horizontal = false;
+
+      if (key("ArrowUp")) {
+        this.axe.vertical = true;
+        this.direction.y = -1;
+      } else if (key("ArrowDown")) {
+        this.axe.vertical = true;
+        this.direction.y = 1;
+      } else this.axe.vertical = false;
+
+      if (this.axe.horizontal) {
+        if (this.speed.x < this.maxSpeed.x) this.speed.x += this.acceleration.x;
+      } else {
+        if (this.speed.x > 0) this.speed.x -= this.deceleration.x;
+        else this.speed.x = 0;
+      }
+      if (this.axe.vertical) {
+        if (this.speed.y < this.maxSpeed.y) this.speed.y += this.acceleration.y;
+      } else {
+        if (this.speed.y > 0) this.speed.y -= this.deceleration.y;
+        else this.speed.y = 0;
+      }
+
+      if (this.speed.x > 0)
+        if (!actor.moveXIf(this.direction.x * this.speed.x, this.canMove))
+          this.speed.x = 0;
+      if (this.speed.y > 0)
+        if (!actor.moveYIf(this.direction.y * this.speed.y, this.canMove))
+          this.speed.y = 0;
     },
   };
   actor.data.health = {
@@ -38,7 +74,7 @@ export default function actor(game) {
     sub(hp) {
       if (isNaN(hp)) return;
       if (this.current > 0) this.current -= 1;
-    }
+    },
   };
   actor.data.experience = {
     current: 0,
