@@ -11,7 +11,7 @@ export default function onUpdate(game) {
   actor.data.movement.control();
 
   // Control map with keyboard
-  map.data.movement.control();
+  // map.data.movement.control();
 
   // Highlight fields and give EXP on actor step
   if (actor.overlaps(field0)) {
