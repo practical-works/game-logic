@@ -1,10 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Game</title>
-    <script src="index.js" type="module" defer></script>
+    <title>Game Logic</title>
+    <link rel="stylesheet" href="pico.min.css" />
   </head>
-  <body style="background-color: #333"></body>
+  <body class="container">
+    <article>
+      <header>
+        <nav>
+          <ul>
+            <li><strong>🎮 Game Logic</strong></li>
+          </ul>
+          <ul>
+            <li>
+              <a
+                href="https://github.com/practical-works/game-logic"
+                target="_blank" class="contrast"
+                >📜 Source on Github</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </header>
+      <p>
+        Here is some examples featuring useful simple common game development
+        related logic with techniques for game core logic structuring, layout
+        manipulation, control handling, collision detection, and data
+        calculation.
+      </p>
+      <div>
+        <a href="./game0/" role="button">▶️ Run Game 0</a>
+        <a href="./game1/" role="button">▶️ Run Game 1</a>
+      </div>
+      <p>
+        <details>
+           <summary>How to to fully check out Game 0</summary>
+           <p>
+             <ul>
+             <li>Drag any object with <kbd>🖱️ left mouse button</kbd>.</li>
+             <li>Move <code>actor</code> object in eight directions with <kbd>⌨️ arrow keys</kbd>.</li>
+             <li>Move <code>map</code> object in eight directions with <kbd>⌨️ wasd keys</kbd>.</li>
+             <li>Move <code>💀 enemy</code> object to cursor&#39;s location with <kbd>⌨️ space key</kbd>.</li>
+             <li>Collide <code>😺 actor</code> and <code>💀 enemy</code> objects to decrease <code>❤️ health bar</code>.</li>
+             <li>Collide <code>😺 actor</code> and <code>🌾 bottom-field</code> to increase <code>❤️ health bar</code>.</li>
+             <li>Collide actor and <code>🌾 top-field</code> to increase <code>🏁 experience bar</code>.</li>
+             </ul>
+           </p>
+         </details>
+         <details>
+           <summary>How to to fully check out Game 1</summary>
+           <p>
+           </p>
+         </details>
+      </p>
+      <footer>
+        ❤️ <a href="https://github.com/Ambratolm" target="_blank" class="contrast">Ambratolm</a> <a href="https://github.com/practical-works" target="_blank" class="contrast">Practica Works</a> 2022
+      </footer>
+    </article>
+  </body>
 </html>

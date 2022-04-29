@@ -48,14 +48,17 @@ It features some techniques for game core logic structuring, layout manipulation
 
 ## 🎇 Example's Features
 
-To fully check out the [example](https://practical-works.github.io/game-logic):
-- Drag any object with <kbd>🖱️ left mouse button</kbd>.
-- Move `actor` object in eight directions with <kbd>⌨️ arrow keys</kbd>.
-- Move `map` object in eight directions with <kbd>⌨️ wasd keys</kbd>.
-- Move `💀 enemy` object to cursor's location with <kbd>⌨️ space key</kbd>.
-- Collide `😺 actor` and `💀 enemy` objects to decrease `❤️ health bar`.
-- Collide `😺 actor` and `🌾 bottom-field` to increase `❤️ health bar`.
-- Collide actor and `🌾 top-field` to increase `🏁 experience bar`.
+To fully check out the [examples](https://practical-works.github.io/game-logic):
+- For `Game 0`:
+    - Drag any object with <kbd>🖱️ left mouse button</kbd>.
+    - Move `actor` object in eight directions with <kbd>⌨️ arrow keys</kbd>.
+    - Move `map` object in eight directions with <kbd>⌨️ wasd keys</kbd>.
+    - Move `💀 enemy` object to cursor's location with <kbd>⌨️ space key</kbd>.
+    - Collide `😺 actor` and `💀 enemy` objects to decrease `❤️ health bar`.
+    - Collide `😺 actor` and `🌾 bottom-field` to increase `❤️ health bar`.
+    - Collide actor and `🌾 top-field` to increase `🏁 experience bar`.
+<!-- - For `Game 1`: -->
+    <!-- - Do stuff... -->
 
 ## 🚀 Development
 

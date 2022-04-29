@@ -24,7 +24,7 @@ export default class Game extends GameObject {
     this._createCanvas();
     this.color = color;
     this._input.game = this;
-    this.onInit(this);
+    this._init();
     this._startLoop();
   }
 
@@ -62,8 +62,8 @@ export default class Game extends GameObject {
     return this._objects;
   }
   set objs(gameObjects) {
-    if (!(gameObjects instanceof GameList)) return;
-    this._objects = gameObjects;
+    if (gameObjects && !(gameObjects instanceof GameList)) return;
+    this._objects = new GameList(`${this.title}Objs`, gameObjects);
   }
 
   _createCanvas() {
@@ -82,6 +82,11 @@ export default class Game extends GameObject {
   _clearCanvas() {
     const ctx = this.$context;
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  }
+
+  _init() {
+    this.onInit(this);
+    for (const obj of this._objects) obj.onInit(this);
   }
 
   _startLoop() {
@@ -104,49 +109,19 @@ export default class Game extends GameObject {
   }
 
   newObj(options = {}) {
-    const { name, type } = options;
-    if (this._objects.gameObjByName(name))
-      throw Error(`A game object named "${name}" already exist.`);
-    switch (type) {
-      case "text":
-        return this._objects.add(new TextGameObject(this, options));
-      default:
-        return this._objects.add(new GameObject(this, options));
-    }
-  }
-
-  newGrid(options = {}) {
-    const { name = "unamedGrid" } = options;
-    const { cell = { color: "", size: {}, margin: 1 } } = options;
-    const { division = { columns: 1, rows: 1 } } = options;
-    const { position = { x: 0, y: 0 } } = options;
-    cell.type = "";
-    const count = division.columns * division.rows;
-    let column = 0;
-    let row = 0;
-    const container = this.newObj({
-      ...options,
-      name,
-      position,
-      hidden: true,
-      size: {
-        w: (cell.size.w + cell.margin) * division.columns + cell.margin,
-        h: (cell.size.h + cell.margin) * division.rows + cell.margin,
-      },
-    });
-    for (let i = 0; i < count; i++) {
-      const gObj = container.childs.add(
-        this.newObj({ ...cell, name: `${name}${i}` })
-      );
-      gObj.position.x = cell.margin + column * (gObj.size.w + cell.margin);
-      gObj.position.y = cell.margin + row * (gObj.size.h + cell.margin);
-      column++;
-      if (column >= division.columns) {
-        column = 0;
-        row++;
+    if (typeof options === "object") {
+      switch (options.type) {
+        case "text":
+          return this._objects.add(new TextGameObject(this, options));
+        case "grid":
+          return this._objects.add(new GridGameObject(this, options));
+        default:
+          return this._objects.add(new GameObject(this, options));
       }
+    } else if (GameObject.isSuperClassOf(options)) {
+      const gameObjectConstructor = options;
+      return this._objects.add(new gameObjectConstructor(this));
     }
-    return container;
   }
 
   draw() {

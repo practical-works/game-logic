@@ -9,14 +9,10 @@ export default class Map extends GameObject {
     this.center();
   }
 
-  control() {
+  onUpdate() {
     if (this.game.input.key("KeyD")) this.moveX(1);
     if (this.game.input.key("KeyA")) this.moveX(-1);
     if (this.game.input.key("KeyW")) this.moveY(-1);
     if (this.game.input.key("KeyS")) this.moveY(1);
-  }
-
-  onUpdate() {
-    this.control();
   }
 }

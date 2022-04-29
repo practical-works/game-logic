@@ -22,14 +22,17 @@ export default class GameObject extends Shape {
     GameObject._count++;
     this._id = GameObject._count - 1;
     this.game = game;
-    this.name = name || `unamedGameObject${this.id}`;
+    this.name = name || `unamed${this.id}`;
     this.data = data;
     this.color = color;
     this.hidden = hidden;
     this.parent = parent;
     this.childs = childs;
-    this.childs.onAdd = (gObj) => (gObj.parent = this);
-    this.childs.onRemove = (gObj) => (gObj.parent = null);
+    this.childs.onAdd = (addedChild) => {
+      if (addedChild.parent && addedChild.parent.id === this.id) return;
+      addedChild._parent = this;
+    };
+    this.childs.onRemove = (removedChild) => (removedChild._parent = null);
     if (centerX) this.centerX(centerX);
     if (centerY) this.centerY(centerY);
     if (center) this.center(center);
@@ -82,7 +85,10 @@ export default class GameObject extends Shape {
     return this._parent;
   }
   set parent(parent) {
-    if (parent && !(parent instanceof GameObject)) return;
+    if (parent) {
+      if (!(parent instanceof GameObject)) return;
+      if (this._parent && parent.id === this._parent.id) return;
+    }
     if (this._parent) this._parent.childs.remove(this);
     this._parent = parent || null;
     if (this._parent) this._parent.childs.add(this);
@@ -94,7 +100,7 @@ export default class GameObject extends Shape {
   set childs(childs) {
     if (childs && !(childs instanceof GameList)) return;
     if (this._childs) for (const child of this._childs) child.parent = null;
-    this._childs = childs || new GameList();
+    this._childs = childs || new GameList(`${this.name}Childs`);
     if (this._childs) for (const child of this._childs) child.parent = this;
   }
 
@@ -110,6 +116,14 @@ export default class GameObject extends Shape {
   }
   set onUpdate(onUpdate) {
     if (typeof onUpdate === "function") this._onUpdate = onUpdate;
+  }
+
+  static isSuperClassOf(constructor) {
+    return (
+      typeof constructor === "function" &&
+      (constructor === GameObject ||
+        constructor.prototype instanceof GameObject)
+    );
   }
 
   center(relatedShape = this.parent, horiz = true, vert = true) {
@@ -151,5 +165,6 @@ export default class GameObject extends Shape {
     );
     ctx.fill();
     ctx.closePath();
+    for (const child of this.childs) child.draw();
   }
 }
