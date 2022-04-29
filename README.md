@@ -4,7 +4,7 @@
 [![HTML5](https://img.shields.io/badge/html5-blue?logo=html5)](https://github.com/topics/html5)
 [![JavaScript](https://img.shields.io/badge/javaScript-blue?logo=javascript)](https://github.com/topics/javascript)
 
-This is an example featuring some useful simple common game development related logic.<br />
+This is a set of examples implementing some useful simple common game development related logic.<br />
 It features some techniques for game core logic structuring, layout manipulation, control handling, collision detection, and data calculation.
 
 [**🌐 View Live**](https://practical-works.github.io/game-logic)
@@ -12,7 +12,7 @@ It features some techniques for game core logic structuring, layout manipulation
 ![Screenshot1](./screenshot1.gif?raw=true)
 ![Screenshot2](./screenshot2.gif?raw=true)
 
-## 🎯 Achieved Objectives
+## 🎯 Objectives
 
 - Base:
     - [x] Define and render **game screen**.
@@ -46,19 +46,26 @@ It features some techniques for game core logic structuring, layout manipulation
     - [x] Move game object with **tween** animation effect.
     - [x] Move game object with **acceleration** and **deceleration** effect.
 
-## 🎇 Example's Features
+## 🎇 Examples
 
-To fully check out the [examples](https://practical-works.github.io/game-logic):
-- For `Game 0`:
-    - Drag any object with <kbd>🖱️ left mouse button</kbd>.
-    - Move `actor` object in eight directions with <kbd>⌨️ arrow keys</kbd>.
-    - Move `map` object in eight directions with <kbd>⌨️ wasd keys</kbd>.
-    - Move `💀 enemy` object to cursor's location with <kbd>⌨️ space key</kbd>.
-    - Collide `😺 actor` and `💀 enemy` objects to decrease `❤️ health bar`.
-    - Collide `😺 actor` and `🌾 bottom-field` to increase `❤️ health bar`.
-    - Collide actor and `🌾 top-field` to increase `🏁 experience bar`.
-<!-- - For `Game 1`: -->
-    <!-- - Do stuff... -->
+### Example 0
+
+[▶️ Run Game 0](https://practical-works.github.io/game-logic/game0)
+
+This is the main example that showcases all of the **base**, **layout**, **control**, **collision**, and **data** objectives described above.
+
+To fully check out this example:
+- Drag any object with <kbd>🖱️ left mouse button</kbd>.
+- Move `actor` object in eight directions with <kbd>⌨️ arrow keys</kbd>.
+- Move `map` object in eight directions with <kbd>⌨️ wasd keys</kbd>.
+- Move `💀 enemy` object to cursor's location with <kbd>⌨️ space key</kbd>.
+- Collide `😺 actor` and `💀 enemy` objects to decrease `❤️ health bar`.
+- Collide `😺 actor` and `🌾 bottom-field` to increase `❤️ health bar`.
+- Collide `😺 actor` and `🌾 top-field` to increase `🏁 experience bar`.
+
+### Example 1
+
+[▶️ Run Game 1](https://practical-works.github.io/game-logic/game1)
 
 ## 🚀 Development
 
