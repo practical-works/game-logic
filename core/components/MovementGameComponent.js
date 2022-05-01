@@ -33,8 +33,8 @@ export default class MovementGameComponent extends GameComponent {
   control() {
     if (this.key("right")) this.tryMoveX(1);
     else if (this.key("left")) this.tryMoveX(-1);
-    if (this.key("up")) this.tryMoveX(-1);
-    else if (this.key("down")) this.tryMoveX(1);
+    if (this.key("up")) this.tryMoveY(-1);
+    else if (this.key("down")) this.tryMoveY(1);
   }
 
   key(key, readOnce) {

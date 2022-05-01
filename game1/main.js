@@ -1,7 +1,7 @@
-import Game from "../core/Game.js";
+import { Game } from "./core.js";
 import Actor from "./objects/Actor.js";
 import Platform from "./objects/Platform.js";
-import DebugTxt from "./objects/DebugTxt.js";
+import MovementTxt from "./objects/MovementTxt.js";
 
 new Game({
   title: "Game1",
@@ -14,7 +14,7 @@ new Game({
     game.newObj(Platform).move(48, 224);
     game.newObj(Platform).move(288, 288);
     game.newObj(Platform).move(464, 384);
-    game.newObj(DebugTxt);
+    game.newObj(MovementTxt);
   },
   onUpdate(game) {
     game.draw();

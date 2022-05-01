@@ -1,10 +1,9 @@
-import { GameObject } from "../core.js";
-import TopDownMovement from "../components/TopDownMovement.js";
+import { GameObject, TopDownGameComponent } from "../core.js";
 import Health from "../components/Health.js";
 import Experience from "../components/Experience.js";
 
 export default class Actor extends GameObject {
-  movement = new TopDownMovement(this);
+  movement = new TopDownGameComponent(this);
   health = new Health(this);
   experience = new Experience(this);
   map = this.game.obj("map");

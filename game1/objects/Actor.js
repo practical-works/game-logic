@@ -1,8 +1,7 @@
-import GameObject from "../../core/GameObject.js";
-import PlatformerMovement from "../components/PlatformerMovement.js";
+import { GameObject, PlatformGameComponent } from "../core.js";
 
 export default class Actor extends GameObject {
-  movement = new PlatformerMovement(this);
+  movement = new PlatformGameComponent(this);
   obstacles = [];
 
   constructor(game, options) {
