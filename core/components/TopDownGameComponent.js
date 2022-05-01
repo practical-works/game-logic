@@ -41,6 +41,11 @@ export default class TopDownGameComponent extends MovementGameComponent {
   }
 
   control() {
+    this.controlX();
+    this.controlY();
+  }
+
+  controlX() {
     if (this.key("right")) {
       if (this.velocity.x < this.speed.x)
         this.velocity.x += this.acceleration.x;
@@ -51,26 +56,42 @@ export default class TopDownGameComponent extends MovementGameComponent {
       if (this.velocity.x > 0) this.velocity.x -= this.deceleration.x;
       if (this.velocity.x < 0) this.velocity.x += this.deceleration.x;
     }
+    if (!this.tryMoveX()) this.velocity.x = 0;
+  }
 
-    if (this.key("up")) {
-      if (this.velocity.y > -this.speed.y)
-        this.velocity.y -= this.acceleration.y;
-    } else if (this.key("down")) {
+  controlY() {
+    if (this.key("down")) {
       if (this.velocity.y < this.speed.y)
         this.velocity.y += this.acceleration.y;
+    } else if (this.key("up")) {
+      if (this.velocity.y > -this.speed.y)
+        this.velocity.y -= this.acceleration.y;
     } else {
       if (this.velocity.y > 0) this.velocity.y -= this.deceleration.y;
       if (this.velocity.y < 0) this.velocity.y += this.deceleration.y;
     }
+    if (!this.tryMoveY(this.velocity.y)) this.velocity.y = 0;
+  }
 
+  tryMoveX() {
+    this.fixVelocityX();
+    return this.velocity.x && super.tryMoveX(this.velocity.x);
+  }
+
+  tryMoveY() {
+    this.fixVelocityY();
+    return this.velocity.y && super.tryMoveY(this.velocity.y);
+  }
+
+  fixVelocityX() {
     if (this.velocity.x > this.speed.x) this.velocity.x = this.speed.x;
     if (this.velocity.x < -this.speed.x) this.velocity.x = -this.speed.x;
+    this.velocity.x = Number(this.velocity.x.toFixed(2));
+  }
+
+  fixVelocityY() {
     if (this.velocity.y > this.speed.y) this.velocity.y = this.speed.y;
     if (this.velocity.y < -this.speed.y) this.velocity.y = -this.speed.y;
-    this.velocity.x = Number(this.velocity.x.toFixed(2));
     this.velocity.y = Number(this.velocity.y.toFixed(2));
-
-    if (this.velocity.x && !this.tryMoveX(this.velocity.x)) this.velocity.x = 0;
-    if (this.velocity.y && !this.tryMoveY(this.velocity.y)) this.velocity.y = 0;
   }
 }
