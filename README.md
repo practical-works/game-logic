@@ -85,7 +85,7 @@ To fully check out this example:
     ```bash
     http-server -c-1
     ```
-    💡 This will by default run a local server on `http://192.168.1.11:8080`.<br />
+    💡 This will by default run a local server on `http://localhost:8080`.<br />
     💡 The `-c-1` flag will prevent caching.
 
 ### 🏭 Environment

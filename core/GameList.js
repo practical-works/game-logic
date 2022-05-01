@@ -22,6 +22,10 @@ export default class GameList {
     if (name) this._name = String(name);
   }
 
+  get asArray() {
+    return [...this._gameObjects];
+  }
+
   get asReverse() {
     return [...this._gameObjects].reverse();
   }
@@ -32,7 +36,8 @@ export default class GameList {
     for (const gObj of this._gameObjects) {
       if (gameListAsObj[gObj.name]) {
         if (!duplicatesCounter[gObj.name]) duplicatesCounter[gObj.name] = 0;
-        gameListAsObj[`${gObj.name}${duplicatesCounter[gObj.name]}`] = gameListAsObj[gObj.name];
+        gameListAsObj[`${gObj.name}${duplicatesCounter[gObj.name]}`] =
+          gameListAsObj[gObj.name];
         delete gameListAsObj[gObj.name];
         duplicatesCounter[gObj.name]++;
         gameListAsObj[`${gObj.name}${duplicatesCounter[gObj.name]}`] = gObj;
@@ -84,7 +89,9 @@ export default class GameList {
 
   add(gameObject) {
     if (!(gameObject instanceof GameObject))
-      throw Error(`The provided argument is not an instance of ${GameObject.name}.`);
+      throw Error(
+        `The provided argument is not an instance of ${GameObject.name}.`
+      );
     if (this.gameObjById(gameObject.id))
       throw Error(
         `Duplicate id. Cannot add the game object named "${gameObject.name}" to the list named "${this.name}" because it already contains a game object with the same id (id: ${gameObject.id}).`
@@ -95,7 +102,9 @@ export default class GameList {
   }
 
   addRange(gameObjects = []) {
-    if (!Array.isArray(gameObjects)) return;
+    if (gameObjects instanceof GameList && gameObjects.length)
+      gameObjects = gameObjects.asArray;
+    else if (!Array.isArray(gameObjects)) return;
     const addedGameObjects = [];
     for (const gObj of gameObjects) {
       const addedObj = this.add(gObj);

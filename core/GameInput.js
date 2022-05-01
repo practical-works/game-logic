@@ -72,8 +72,18 @@ export default class GameInput {
     element.addEventListener("mouseup", onMouseUp, false);
   }
 
-  key(key) {
-    return this._keys.find((k) => k.toLowerCase() === key.toLowerCase());
+  key(key, readOnce) {
+    const keyDown = Boolean(
+      this._keys.find((k) => k.toLowerCase() === key.toLowerCase())
+    );
+    if (readOnce) {
+      const k = `__${key}Down`;
+      if (keyDown) {
+        if (!this[k]) return (this[k] = true);
+        else return false;
+      } else return (this[k] = false);
+    }
+    return keyDown;
   }
 
   mouse(mb) {

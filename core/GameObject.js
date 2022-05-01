@@ -132,13 +132,13 @@ export default class GameObject extends Shape {
   }
 
   overlaps(relatedGameObj, fully = false, horiz = true, vert = true) {
-    if (relatedGameObj instanceof GameObject) {
+    if (relatedGameObj instanceof GameObject)
       return super.overlaps(relatedGameObj, fully, horiz, vert);
-    } else if (relatedGameObj instanceof GameList) {
-      for (const gObj of relatedGameObj)
-        if (this.overlaps(gObj, fully, horiz, vert)) return true;
-      return false;
-    }
+    const gameList = new GameList("", relatedGameObj);
+    if (!gameList.length) return false;
+    for (const gObj of gameList)
+      if (this.overlaps(gObj, fully, horiz, vert)) return true;
+    return false;
   }
 
   drawDistance(relatedGameObj) {

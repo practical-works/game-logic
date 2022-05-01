@@ -98,6 +98,8 @@ export default class Shape {
   }
 
   moveIf(x, y, conditionFn) {
+    if (isNaN(x)) x = 0;
+    if (isNaN(y)) y = 0;
     if (!conditionFn || typeof conditionFn !== "function")
       conditionFn = () => true;
     const totalSteps = { x: 0, y: 0 };
@@ -139,6 +141,8 @@ export default class Shape {
   }
 
   moveWithTween(x, y, currentTime, duration, tweenFn) {
+    if (isNaN(x)) x = 0;
+    if (isNaN(y)) y = 0;
     if (isNaN(currentTime) || currentTime < 0) currentTime = 0;
     if (isNaN(duration) || duration < 0) duration = 1000;
     if (currentTime > duration) currentTime = duration;

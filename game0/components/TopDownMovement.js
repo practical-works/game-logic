@@ -1,57 +1,57 @@
 import GameGomponent from "../../core/GameComponent.js";
 
 export default class TopDownMovement extends GameGomponent {
-  axe = { horizontal: false, vertical: false };
-  speed = { x: 0, y: 0 };
-  direction = { x: 1, y: -1 };
-  maxSpeed = { x: 5, y: 5 };
-  acceleration = { x: 0.1, y: 0.1 };
-  deceleration = { x: 0.05, y: 0.05 };
-  obstacles = {
-    map: this.gameObj.game.obj("map"),
-    blocks: this.gameObj.game.obj("blocks"),
+  controls = {
+    right: "ArrowRight",
+    left: "ArrowLeft",
+    up: "ArrowUp",
+    down: "ArrowDown",
   };
-
-  get canMove() {
-    const { map, blocks } = this.obstacles;
-    return this.gameObj.overlaps(map, true) && !this.gameObj.overlaps(blocks.childs);
-  }
+  onConstraint = () => true;
+  velocity = { x: 0, y: 0 };
+  speed = { x: 5, y: 5 };
+  acceleration = { x: 0.1, y: 0.1 };
+  deceleration = { x: 0.1, y: 0.1 };
 
   control() {
-    if (this.input.key("ArrowRight")) {
-      this.axe.horizontal = true;
-      this.direction.x = 1;
-    } else if (this.input.key("ArrowLeft")) {
-      this.axe.horizontal = true;
-      this.direction.x = -1;
-    } else this.axe.horizontal = false;
-
-    if (this.input.key("ArrowUp")) {
-      this.axe.vertical = true;
-      this.direction.y = -1;
-    } else if (this.input.key("ArrowDown")) {
-      this.axe.vertical = true;
-      this.direction.y = 1;
-    } else this.axe.vertical = false;
-
-    if (this.axe.horizontal) {
-      if (this.speed.x < this.maxSpeed.x) this.speed.x += this.acceleration.x;
+    if (this.key("right")) {
+      if (this.velocity.x < this.speed.x)
+        this.velocity.x += this.acceleration.x;
+    } else if (this.key("left")) {
+      if (this.velocity.x > -this.speed.x)
+        this.velocity.x -= this.acceleration.x;
     } else {
-      if (this.speed.x > 0) this.speed.x -= this.deceleration.x;
-      else this.speed.x = 0;
-    }
-    if (this.axe.vertical) {
-      if (this.speed.y < this.maxSpeed.y) this.speed.y += this.acceleration.y;
-    } else {
-      if (this.speed.y > 0) this.speed.y -= this.deceleration.y;
-      else this.speed.y = 0;
+      if (this.velocity.x > 0) this.velocity.x -= this.deceleration.x;
+      if (this.velocity.x < 0) this.velocity.x += this.deceleration.x;
     }
 
-    if (this.speed.x > 0)
-      if (!this.gameObj.moveXIf(this.direction.x * this.speed.x, () => this.canMove))
-        this.speed.x = 0;
-    if (this.speed.y > 0)
-      if (!this.gameObj.moveYIf(this.direction.y * this.speed.y, () => this.canMove))
-        this.speed.y = 0;
+    if (this.key("up")) {
+      if (this.velocity.y > -this.speed.y)
+        this.velocity.y -= this.acceleration.y;
+    } else if (this.key("down")) {
+      if (this.velocity.y < this.speed.y)
+        this.velocity.y += this.acceleration.y;
+    } else {
+      if (this.velocity.y > 0) this.velocity.y -= this.deceleration.y;
+      if (this.velocity.y < 0) this.velocity.y += this.deceleration.y;
+    }
+
+    this.velocity.x = Number(this.velocity.x.toFixed(2));
+    this.velocity.y = Number(this.velocity.y.toFixed(2));
+
+    if (this.velocity.x && !this.tryMoveX(this.velocity.x)) this.velocity.x = 0;
+    if (this.velocity.y && !this.tryMoveY(this.velocity.y)) this.velocity.y = 0;
+  }
+
+  key(key, readOnce) {
+    return this.input.key(this.controls[key], readOnce);
+  }
+
+  tryMoveX(x) {
+    return this.gameObj.moveXIf(x, this.onConstraint);
+  }
+
+  tryMoveY(y) {
+    return this.gameObj.moveYIf(y, this.onConstraint);
   }
 }

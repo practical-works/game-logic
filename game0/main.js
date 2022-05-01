@@ -7,6 +7,7 @@ import Enemy from "./objects/Enemy.js";
 import HealthBar from "./objects/HealthBar.js";
 import ExperienceBar from "./objects/ExperienceBar.js";
 import CursorTxt from "./objects/CursorTxt.js";
+import MovementTxt from "./objects/MovementTxt.js";
 
 new Game({
   title: "Game0",
@@ -22,6 +23,7 @@ new Game({
     game.newObj(HealthBar);
     game.newObj(ExperienceBar);
     game.newObj(CursorTxt);
+    game.newObj(MovementTxt);
     for (const gObj of game.objs) gObj.data.initColor = gObj.color;
   },
   onUpdate(game) {
