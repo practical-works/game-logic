@@ -1,4 +1,4 @@
-import GameObject from "../../core/GameObject.js";
+import { GameObject } from "../core.js";
 
 export default class Enemy extends GameObject {
   constructor(game, options) {

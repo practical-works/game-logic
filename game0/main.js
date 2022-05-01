@@ -1,4 +1,4 @@
-import Game from "../core/Game.js";
+import { Game } from "./core.js";
 import Map from "./objects/Map.js";
 import Field from "./objects/Field.js";
 import Blocks from "./objects/Blocks.js";

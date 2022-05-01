@@ -1,4 +1,4 @@
-import TextGameObject from "../../core/TextGameObject.js";
+import { TextGameObject } from "../core.js";
 
 export default class CursorTxt extends TextGameObject {
   constructor(game, options) {

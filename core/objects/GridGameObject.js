@@ -1,5 +1,5 @@
 import GameObject from "./GameObject.js";
-import Size from "./geometry/Size.js";
+import Size from "../geometry/Size.js";
 
 class CellGameObject extends GameObject {
   _margin = 1;

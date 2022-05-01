@@ -1,4 +1,4 @@
-import GameGomponent from "../../core/GameComponent.js";
+import { GameGomponent } from "../core.js";
 
 export default class Experience extends GameGomponent {
   current = 0;

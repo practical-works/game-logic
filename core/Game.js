@@ -1,5 +1,5 @@
-import GameObject from "./GameObject.js";
-import TextGameObject from "./TextGameObject.js";
+import GameObject from "./objects/GameObject.js";
+import TextGameObject from "./objects/TextGameObject.js";
 import GameList from "./GameList.js";
 import GameInput from "./GameInput.js";
 import Size from "./geometry/Size.js";

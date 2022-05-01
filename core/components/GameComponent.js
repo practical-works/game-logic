@@ -1,4 +1,4 @@
-import GameObject from "../../core/GameObject.js";
+import GameObject from "../objects/GameObject.js";
 
 export default class GameComponent {
   _gameObject = null;

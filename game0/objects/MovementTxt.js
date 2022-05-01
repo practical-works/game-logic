@@ -1,4 +1,4 @@
-import TextGameObject from "../../core/TextGameObject.js";
+import { TextGameObject } from "../core.js";
 
 export default class MovementTxt extends TextGameObject {
   actor = this.game.obj("actor");

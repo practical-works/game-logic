@@ -1,5 +1,4 @@
-import GameObject from "../../core/GameObject.js";
-import TextGameObject from "../../core/TextGameObject.js";
+import { GameObject, TextGameObject } from "../core.js";
 
 export default class ExperienceBar extends GameObject {
   experience = null;

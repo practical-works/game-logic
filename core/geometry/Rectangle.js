@@ -1,7 +1,7 @@
 import Size from "./Size.js";
 import Position from "./Position.js";
 
-export default class Shape {
+export default class Rectangle {
   _size = new Size();
   _hotspot = new Position();
   _position = new Position();
@@ -167,22 +167,22 @@ export default class Shape {
     return this.move(0, y).y;
   }
 
-  center(relatedShape = {}, horiz = true, vert = true) {
-    const { size } = relatedShape;
+  center(relatedRectangle = {}, horiz = true, vert = true) {
+    const { size } = relatedRectangle;
     if (!size) return;
     const { w, h } = size;
     if (horiz) this.position.x = (w - this.size.w) * 0.5 + this.hotspot.x;
     if (vert) this.position.y = (h - this.size.h) * 0.5 + this.hotspot.y;
   }
-  centerX(relatedShape) {
-    this.center(relatedShape, true, false);
+  centerX(relatedRectangle) {
+    this.center(relatedRectangle, true, false);
   }
-  centerY(relatedShape) {
-    this.center(relatedShape, false, true);
+  centerY(relatedRectangle) {
+    this.center(relatedRectangle, false, true);
   }
 
-  overlaps(relatedShape = {}, fully = false, horiz = true, vert = true) {
-    const { topLeft, topRight, bottomLeft } = relatedShape;
+  overlaps(relatedRectangle = {}, fully = false, horiz = true, vert = true) {
+    const { topLeft, topRight, bottomLeft } = relatedRectangle;
     const collidesHorizontally = fully
       ? (topLeft.x <= this.topLeft.x && topRight.x >= this.topRight.x) ||
         (this.topLeft.x <= topLeft.x && this.topRight.x >= topRight.x)
@@ -195,11 +195,11 @@ export default class Shape {
     else if (horiz) return collidesHorizontally;
     else if (vert) return collidesVertically;
   }
-  overlapsX(relatedShape, fully) {
-    return this.overlaps(relatedShape, fully, true, false);
+  overlapsX(relatedRectangle, fully) {
+    return this.overlaps(relatedRectangle, fully, true, false);
   }
-  overlapsY(relatedShape, fully) {
-    return this.overlaps(relatedShape, fully, false, true);
+  overlapsY(relatedRectangle, fully) {
+    return this.overlaps(relatedRectangle, fully, false, true);
   }
 
   overlapsPoint(point = {}, horiz = true, vert = true) {
@@ -211,8 +211,8 @@ export default class Shape {
     else if (vert) return collidesVertically;
   }
 
-  distance(relatedShape = {}) {
-    const { position } = relatedShape;
+  distance(relatedRectangle = {}) {
+    const { position } = relatedRectangle;
     if (!position) return NaN;
     const { x, y } = position;
     const dx = Math.abs(x - this.position.x);

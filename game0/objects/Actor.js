@@ -1,4 +1,4 @@
-import GameObject from "../../core/GameObject.js";
+import { GameObject } from "../core.js";
 import TopDownMovement from "../components/TopDownMovement.js";
 import Health from "../components/Health.js";
 import Experience from "../components/Experience.js";

@@ -1,8 +1,8 @@
-import Game from "./Game.js";
-import GameList from "./GameList.js";
-import Shape from "./geometry/Shape.js";
+import Game from "../Game.js";
+import GameList from "../GameList.js";
+import Rectangle from "../geometry/Rectangle.js";
 
-export default class GameObject extends Shape {
+export default class GameObject extends Rectangle {
   static _count = 0;
   _id = -1;
   _game = null;
@@ -126,9 +126,9 @@ export default class GameObject extends Shape {
     );
   }
 
-  center(relatedShape = this.parent, horiz = true, vert = true) {
-    if (!(relatedShape instanceof Shape)) relatedShape = this.parent;
-    super.center(relatedShape || this.game, horiz, vert);
+  center(relatedRectangle = this.parent, horiz = true, vert = true) {
+    if (!(relatedRectangle instanceof Rectangle)) relatedRectangle = this.parent;
+    super.center(relatedRectangle || this.game, horiz, vert);
   }
 
   overlaps(relatedGameObj, fully = false, horiz = true, vert = true) {

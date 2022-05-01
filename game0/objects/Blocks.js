@@ -1,4 +1,4 @@
-import GridGameObject from "../../core/GridGameObject.js";
+import { GridGameObject } from "../core.js";
 
 export default class Blocks extends GridGameObject {
   constructor(game, options) {

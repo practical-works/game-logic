@@ -1,13 +1,6 @@
-import GameGomponent from "../../core/GameComponent.js";
+import { MovementGameComponent } from "../core.js";
 
-export default class TopDownMovement extends GameGomponent {
-  controls = {
-    right: "ArrowRight",
-    left: "ArrowLeft",
-    up: "ArrowUp",
-    down: "ArrowDown",
-  };
-  onConstraint = () => true;
+export default class TopDownMovement extends MovementGameComponent {
   velocity = { x: 0, y: 0 };
   speed = { x: 5, y: 5 };
   acceleration = { x: 0.1, y: 0.1 };
@@ -41,17 +34,5 @@ export default class TopDownMovement extends GameGomponent {
 
     if (this.velocity.x && !this.tryMoveX(this.velocity.x)) this.velocity.x = 0;
     if (this.velocity.y && !this.tryMoveY(this.velocity.y)) this.velocity.y = 0;
-  }
-
-  key(key, readOnce) {
-    return this.input.key(this.controls[key], readOnce);
-  }
-
-  tryMoveX(x) {
-    return this.gameObj.moveXIf(x, this.onConstraint);
-  }
-
-  tryMoveY(y) {
-    return this.gameObj.moveYIf(y, this.onConstraint);
   }
 }

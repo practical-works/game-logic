@@ -1,4 +1,4 @@
-import GameObject from "./GameObject.js";
+import GameObject from "./objects/GameObject.js";
 
 export default class GameList {
   _name = "";
