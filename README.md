@@ -32,8 +32,10 @@ It features some techniques for game core logic structuring, layout manipulation
     - [x] **Align** game objects in **grid**.
 - Control:
     - [x] Handle keyboard **input**.
+    - [x] Read keyboard input **always**.
+    - [x] Read keyboard input on **first key press only**.
     - [x] Handle mouse **input**.
-    - [x] **Move** game object based on input.
+    - [x] **Move** game object based on input (keyboard and mouse).
 - Collision:
     - [x] Detect **point collision** between game objects.
     - [x] Detect **rectangle collision** between game objects.
@@ -44,7 +46,15 @@ It features some techniques for game core logic structuring, layout manipulation
     - [x] Calculate **health percentage** of player.
     - [x] Calculate **experience** of player based on **level**.
     - [x] Move game object with **tween** animation effect.
-    - [x] Move game object with **acceleration** and **deceleration** effect.
+- Movement:
+    - [x] Implement basic **top-down movement** (eight directions movement).
+    - [x] Add **speed** feature to top-down movement.
+    - [x] Add **acceleration** and **deceleration** features to top-down movement.
+    - [x] Implement **platformer movement** (side-scroller movement).
+    - [x] Add **speed**, **acceleration**, and **deceleration** to platformer movement.
+    - [x] Add basic **fixed-height jump** feature to platformer movement.
+    - [x] Add **variable-height jump** feature.
+    - [x] Add **multiple jump** (double jump or more) feature.
 
 ## 🎇 Examples
 
@@ -52,20 +62,30 @@ It features some techniques for game core logic structuring, layout manipulation
 
 [▶️ Run Game 0](https://practical-works.github.io/game-logic/game0)
 
-This is the main example that showcases all of the **base**, **layout**, **control**, **collision**, and **data** objectives described above.
+This is the main example that showcases all of the **base**, **layout**, **control**, **collision**, **data**, and **movement/top-down** objectives described above.
 
 To fully check out this example:
 - Drag any object with <kbd>🖱️ left mouse button</kbd>.
-- Move `actor` object in eight directions with <kbd>⌨️ arrow keys</kbd>.
-- Move `map` object in eight directions with <kbd>⌨️ wasd keys</kbd>.
+- Move `😺 actor` object in eight directions with <kbd>⌨️ arrow keys</kbd>.
+- Move `■ map` object in eight directions with <kbd>⌨️ wasd keys</kbd>.
 - Move `💀 enemy` object to cursor's location with <kbd>⌨️ space key</kbd>.
 - Collide `😺 actor` and `💀 enemy` objects to decrease `❤️ health bar`.
 - Collide `😺 actor` and `🌾 bottom-field` to increase `❤️ health bar`.
 - Collide `😺 actor` and `🌾 top-field` to increase `🏁 experience bar`.
+- See `🐭 mouse` cursor coordinates in bottom-right of game screen.
+- See `✈ velocity` and `✜ direction` of movement (on x and y axis) in top-left of game screen.
 
 ### Example 1
 
 [▶️ Run Game 1](https://practical-works.github.io/game-logic/game1)
+
+This example showcases the **movement/platformer** objectives described above.
+
+To fully check out this example:
+- Move `😺 actor` object right or left with <kbd>⌨️ arrow keys</kbd>.
+- Make Jump `😺 actor` object with <kbd>⌨️ space key</kbd>.
+- Try multiple jumps in air.
+- See `✈ velocity` and `✜ direction` of movement (on x and y axis), and `↑ jumps` count (per maximum jumps) in top-left of game screen.
 
 ## 🚀 Development
 

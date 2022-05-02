@@ -1,11 +1,12 @@
 import MovementGameComponent from "./MovementGameComponent.js";
 import Position from "../geometry/Position.js";
+import Size from "../geometry/Size.js";
 
 export default class TopDownGameComponent extends MovementGameComponent {
   _velocity = new Position(0, 0);
-  _speed = new Position(5, 5);
-  _acceleration = new Position(0.1, 0.1);
-  _deceleration = new Position(0.1, 0.1);
+  _speed = new Size(5, 5);
+  _acceleration = new Size(0.1, 0.1);
+  _deceleration = new Size(0.1, 0.1);
 
   constructor(gameObject, options = {}) {
     super(gameObject, options);

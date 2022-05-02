@@ -10,8 +10,9 @@ export default class Size {
       if (typeof arguments[0] === "object") {
         const { width, columns, w, c } = arguments[0];
         const { height, rows, h, r } = arguments[0];
-        this.width = width || columns || w || c;
-        this.height = height || rows || h || r;
+        const { xDistance, yDistance, x , y } = arguments[0];
+        this.width = width || columns || xDistance || w || c || x;
+        this.height = height || rows || yDistance || h || r || y;
       } else {
         this.width = this.height = arguments[0];
       }
@@ -72,5 +73,33 @@ export default class Size {
   }
   set r(r) {
     this.height = r;
+  }
+
+  get xDistance() {
+    return this.width;
+  }
+  set xDistance(xDistance) {
+    this.width = xDistance;
+  }
+
+  get yDistance() {
+    return this.height;
+  }
+  set yDistance(yDistance) {
+    this.height = yDistance;
+  }
+
+  get x() {
+    return this.width;
+  }
+  set x(x) {
+    this.width = x;
+  }
+
+  get y() {
+    return this.height;
+  }
+  set y(y) {
+    this.height = y;
   }
 }

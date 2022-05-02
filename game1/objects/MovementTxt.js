@@ -14,20 +14,23 @@ export default class MovementTxt extends TextGameObject {
 
   onUpdate() {
     const { velocity, jumps, maxJumps } = this.actor.movement;
+    const space = " ";
     let output = "";
     if (velocity) {
       const { x, y } = velocity;
-      const icon = {};
-      if (x > 0) icon.x = "▶";
-      else if (x < 0) icon.x = "◀";
-      else icon.x = "";
-      if (y > 0) icon.y = "▼";
-      else if (y < 0) icon.y = "▲";
-      else icon.y = "";
-      output += `${icon.x} x:${velocity.x}\n`;
-      output += `${icon.y} y:${velocity.y}\n`;
+      const velocityIcon = {};
+      if (x > 0) velocityIcon.x = "▶";
+      else if (x < 0) velocityIcon.x = "◀";
+      if (y > 0) velocityIcon.y = "▼";
+      else if (y < 0) velocityIcon.y = "▲";
+      output += `${velocityIcon.x || space} x:${velocity.x}\n`;
+      output += `${velocityIcon.y || space} y:${velocity.y}\n`;
     }
-    output += ` 🏃:${jumps}/${maxJumps}\n`;
+    let jumpsIcon;
+    if (jumps === 1) jumpsIcon ="↥";
+    else if (jumps > 1 && jumps < maxJumps) jumpsIcon = "↑";
+    else if (jumps === maxJumps) jumpsIcon = "⇑";
+    output += `${jumpsIcon || space} ${jumps}/${maxJumps}\n`;
     this.text = output;
   }
 }
