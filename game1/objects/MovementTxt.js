@@ -13,7 +13,7 @@ export default class MovementTxt extends TextGameObject {
   }
 
   onUpdate() {
-    const { velocity } = this.actor.movement;
+    const { velocity, jumps, maxJumps } = this.actor.movement;
     let output = "";
     if (velocity) {
       const { x, y } = velocity;
@@ -27,6 +27,7 @@ export default class MovementTxt extends TextGameObject {
       output += `${icon.x} x:${velocity.x}\n`;
       output += `${icon.y} y:${velocity.y}\n`;
     }
+    output += ` 🏃:${jumps}/${maxJumps}\n`;
     this.text = output;
   }
 }
