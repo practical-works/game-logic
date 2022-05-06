@@ -14,39 +14,42 @@ It features some techniques for game core logic structuring, layout manipulation
 
 ## 🎯 Objectives
 
-- Base:
+- ⬛ Base:
     - [x] Define and render **game screen**.
     - [x] Create and run **game loop**.
     - [x] Define **game object**.
-    - [x] Render **basic shape** game object.
+    - [x] Render **ractangle** game object.
     - [x] Render **text** game object.
-- Layout:
-    - [x] Define **size** (width, height) of game object.
-    - [x] Define **position** (x, y) of game object.
-    - [x] Define **hotspot** (x, y) of game object.
+    - [ ] Render **image** (sprite) game object.
+    - [ ] Render **animation** from **multiple images**.
+    - [ ] Render animation from **single image** (spritesheet).
+- 📐 Layout:
+    - [x] Define **size** (width and height) of game object.
+    - [x] Define **position** (x and y) of game object.
+    - [x] Define **hotspot** (x and y) of game object.
     - [x] Handle **hotspot-based positioning** of game object.
     - [x] Define and handle **parent-child hierarchy** between game objects.
     - [x] Perform **relative hierarchical positioning** of game objects.
     - [x] **Center** position and hotspot of game object.
     - [x] **Align** game objects in **horizontal** and **vertical** line.
     - [x] **Align** game objects in **grid**.
-- Control:
-    - [x] Handle keyboard **input**.
+- ⌨️ Control:
+    - [x] Handle **keyboard input**.
     - [x] Read keyboard input **always**.
-    - [x] Read keyboard input on **first key press only**.
-    - [x] Handle mouse **input**.
+    - [x] Read keyboard input **on first key press only**.
+    - [x] Handle **mouse input**.
     - [x] **Move** game object based on input (keyboard and mouse).
-- Collision:
+- 💥 Collision:
     - [x] Detect **point collision** between game objects.
     - [x] Detect **rectangle collision** between game objects.
     - [x] **Stop** moving game object based on collision.
     - [x] Detect **distance** between game objects.
-- Data:
+- 💽 Data:
     - [x] Define game **player** data.
     - [x] Calculate **health percentage** of player.
     - [x] Calculate **experience** of player based on **level**.
     - [x] Move game object with **tween** animation effect.
-- Movement:
+- 🏃 Movement:
     - [x] Implement basic **top-down movement** (eight directions movement).
     - [x] Add **speed** feature to top-down movement.
     - [x] Add **acceleration** and **deceleration** features to top-down movement.
@@ -55,6 +58,13 @@ It features some techniques for game core logic structuring, layout manipulation
     - [x] Add basic **fixed-height jump** feature to platformer movement.
     - [x] Add **variable-height jump** feature.
     - [x] Add **multiple jump** (double jump or more) feature.
+- 🎦 Viewport:
+    - [ ] Define **layer** and **z-index** for game objects.
+    - [ ] Render **multiple layers** (background and foreground) of game objects.
+    - [ ] Define **scene** game object with **virtual size** (width and height).
+    - [ ] Define **camera** (viewport) game object.
+    - [ ] **Move camera** and **scroll** across scene.
+    - [ ] Attain **parallax** effect between layers.
 
 ## 🎇 Examples
 
