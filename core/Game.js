@@ -2,7 +2,7 @@ import GameObject from "./objects/GameObject.js";
 import TextGameObject from "./objects/TextGameObject.js";
 import GameList from "./GameList.js";
 import GameInput from "./GameInput.js";
-import Size from "./geometry/Size.js";
+import Dimensions from "./geometry/Dimensions.js";
 
 export default class Game extends GameObject {
   _context;
@@ -14,7 +14,7 @@ export default class Game extends GameObject {
   _objects = new GameList();
 
   constructor(options = {}) {
-    if (!options.size) options.size = new Size(640, 480);
+    if (!options.size) options.size = new Dimensions(640, 480);
     super(null, options);
     const { title, color, objs, onInit, onUpdate } = options;
     this.title = title;

@@ -4,7 +4,10 @@ export default class Enemy extends GameObject {
   movement = new TopDownGameComponent(this);
   map = this.game.obj("map");
   obstacles = [];
-  delay = 0;
+  randMove = {
+    delay: 0,
+    direction: { x: 0, y: 0 },
+  };
 
   constructor(game, options) {
     super(game, options);
@@ -21,19 +24,27 @@ export default class Enemy extends GameObject {
     return this.overlaps(this.map, true) && !this.overlaps(this.obstacles);
   }
 
+  moveRandomly() {
+    if (this.randMove.delay <= 0) {
+      this.randMove.delay = Utils.random(1, 1000);
+      this.randMove.direction.x = Utils.random(-1, 1);
+      this.randMove.direction.y = Utils.random(-1, 1);
+    } else this.randMove.delay--;
+    if (this.randMove.delay < 300)
+      this.randMove.direction = { x: 0, y: 0 };
+    const moved = {};
+    moved.x = this.movement.tryMoveX(this.randMove.direction.x);
+    moved.y = this.movement.tryMoveY(this.randMove.direction.y);
+    if (this.movement.velocity.x && !moved.x) this.randMove.direction.x *= -1;
+    if (this.movement.velocity.y && !moved.y) this.randMove.direction.y *= -1;
+
+  }
+
   onInit() {
     this.obstacles = [...this.game.obj("blocks").childs.asArray];
-    this.movement.velocity.x = Utils.random(-1, 1);
-    this.movement.velocity.y = Utils.random(-1, 1);
   }
 
   onUpdate() {
-    if (!this.movement.velocity.x) this.movement.velocity.x = Utils.random(-1, 1);
-    if (!this.movement.velocity.y) this.movement.velocity.y = Utils.random(-1, 1);
-    if (this.delay > 0) this.delay--;
-    else this.delay = Utils.random(0, 1000);
-    if (this.delay < 100) return;
-    if (!this.movement.tryMoveX()) this.movement.velocity.x *= -1;
-    if (!this.movement.tryMoveY()) this.movement.velocity.y *= -1;
+    this.moveRandomly();
   }
 }

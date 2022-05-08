@@ -1,4 +1,4 @@
-export default class Position {
+export default class Coordinates {
   _x = 0;
   _y = 0;
 

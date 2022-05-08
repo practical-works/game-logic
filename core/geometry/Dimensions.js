@@ -1,4 +1,4 @@
-export default class Size {
+export default class Dimensions {
   _width = 32;
   _height = 32;
 

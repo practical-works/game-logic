@@ -1,5 +1,6 @@
+import MovementGameComponent from "./MovementGameComponent.js";
 import TopDownGameComponent from "./TopDownGameComponent.js";
-import Position from "../geometry/Position.js";
+import Coordinates from "../geometry/Coordinates.js";
 
 export default class PlatformGameComponent extends TopDownGameComponent {
   _jumpEnabled = true;
@@ -103,7 +104,7 @@ export default class PlatformGameComponent extends TopDownGameComponent {
     if (!this.key("jump") && this.flying)
       this.velocity.y += this.deceleration.y;
 
-    if (!this.tryMoveY(this.velocity.y)) {
+    if (!MovementGameComponent.prototype.tryMoveY.call(this, this.velocity.y)) {
       if (this.falling) this.airJumps = this.floorJumps = 0;
       this.velocity.y = 0;
     }

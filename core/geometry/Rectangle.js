@@ -1,10 +1,10 @@
-import Size from "./Size.js";
-import Position from "./Position.js";
+import Dimensions from "./Dimensions.js";
+import Coordinates from "./Coordinates.js";
 
 export default class Rectangle {
-  _size = new Size();
-  _hotspot = new Position();
-  _position = new Position();
+  _size = new Dimensions();
+  _hotspot = new Coordinates();
+  _position = new Coordinates();
 
   constructor(shape = {}) {
     const { size, hotspot, position } = shape;
@@ -17,21 +17,21 @@ export default class Rectangle {
     return this._size;
   }
   set size(size) {
-    this._size = new Size(size);
+    this._size = new Dimensions(size);
   }
 
   get hotspot() {
     return this._hotspot;
   }
   set hotspot(hotspot) {
-    this._hotspot = new Position(hotspot);
+    this._hotspot = new Coordinates(hotspot);
   }
 
   get position() {
     return this._position;
   }
   set position(position) {
-    this._position = new Position(position);
+    this._position = new Coordinates(position);
   }
 
   get topLeft() {

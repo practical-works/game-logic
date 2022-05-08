@@ -1,5 +1,5 @@
 import GameObject from "./GameObject.js";
-import Size from "../geometry/Size.js";
+import Dimensions from "../geometry/Dimensions.js";
 
 class CellGameObject extends GameObject {
   _margin = 1;
@@ -21,7 +21,7 @@ class CellGameObject extends GameObject {
 
 export default class GridGameObject extends GameObject {
   _cell = new CellGameObject();
-  _division = new Size({ columns: 1, rows: 1 });
+  _division = new Dimensions({ columns: 1, rows: 1 });
 
   constructor(game, options = {}) {
     if (!options.name) options.name = "unamedGrid";
@@ -42,7 +42,7 @@ export default class GridGameObject extends GameObject {
     return this._division;
   }
   set division(division) {
-    this._division = new Size(division);
+    this._division = new Dimensions(division);
   }
 
   onInit() {
