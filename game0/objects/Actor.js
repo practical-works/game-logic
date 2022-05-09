@@ -15,9 +15,9 @@ export default class Actor extends GameObject {
     this.parent = this.game.obj("map");
     this.color = "#ea4f36";
     this.sprites = [
-      "/game0/assets/actor_0.png",
-      "/game0/assets/actor_1.png",
-      "/game0/assets/actor_2.png"
+      "../game0/assets/actor_0.png",
+      "../game0/assets/actor_1.png",
+      "../game0/assets/actor_2.png"
     ];
     this.loopAnimation = true;
     this.animationSpeed = 3;
