@@ -9,15 +9,21 @@ export default class GameObject extends Rectangle {
   _data = {};
   _name = "";
   _color = "white";
+  _sprites = [];
+  _images = [];
   _parent = null;
   _childs = new GameList();
   _hidden = false;
+  _animationFrame = 0;
+  _loopAnimation = false;
+  _animationSpeed = 100;
+  _animationProgress = 0;
   _onInit = (gObj) => undefined;
   _onUpdate = (gObj) => undefined;
 
   constructor(game, options = {}) {
     super(options);
-    const { name, data, color, hidden } = options;
+    const { name, data, color, sprites, sprite, hidden } = options;
     const { parent, childs, centerX, centerY, center } = options;
     GameObject._count++;
     this._id = GameObject._count - 1;
@@ -25,6 +31,7 @@ export default class GameObject extends Rectangle {
     this.name = name || `unamed${this.id}`;
     this.data = data;
     this.color = color;
+    this.sprites = sprites || sprite;
     this.hidden = hidden;
     this.parent = parent;
     this.childs = childs;
@@ -74,11 +81,45 @@ export default class GameObject extends Rectangle {
     if (color) this._color = String(color);
   }
 
+  get sprite() {
+    return this._sprites[0];
+  }
+  set sprite(sprite) {
+    if (typeof sprite !== "string") return;
+    this._sprites.splice(1, this._sprites.length);
+    this._images.splice(1, this._images.length);
+    this._images[0] = new Image();
+    this._images[0].src = this._sprites[0] = sprite;
+  }
+
+  get sprites() {
+    return this._sprites;
+  }
+  set sprites(sprites) {
+    if (!Array.isArray(sprites)) return;
+    this._sprites.splice(0, this._sprites.length);
+    this._images.splice(0, this._images.length);
+    for (const sprite of sprites) {
+      if (typeof sprite !== "string") continue;
+      this._sprites.push(sprite);
+      const image = new Image();
+      image.src = sprite;
+      this._images.push(image);
+    }
+  }
+
   get hidden() {
     return this._hidden;
   }
   set hidden(hidden) {
     this._hidden = Boolean(hidden);
+  }
+
+  get loopAnimation() {
+    return this._loopAnimation;
+  }
+  set loopAnimation(loopAnimation) {
+    this._loopAnimation = Boolean(loopAnimation);
   }
 
   get parent() {
@@ -104,6 +145,16 @@ export default class GameObject extends Rectangle {
     if (this._childs) for (const child of this._childs) child.parent = this;
   }
 
+  get animationSpeed() {
+    return this._animationSpeed;
+  }
+  set animationSpeed(animationSpeed) {
+    if (isNaN(animationSpeed)) return;
+    if (animationSpeed < 0) animationSpeed = 0;
+    if (animationSpeed > 100) animationSpeed = 100;
+    this._animationSpeed = animationSpeed;
+  }
+
   get onInit() {
     return this._onInit;
   }
@@ -127,7 +178,8 @@ export default class GameObject extends Rectangle {
   }
 
   center(relatedRectangle = this.parent, horiz = true, vert = true) {
-    if (!(relatedRectangle instanceof Rectangle)) relatedRectangle = this.parent;
+    if (!(relatedRectangle instanceof Rectangle))
+      relatedRectangle = this.parent;
     super.center(relatedRectangle || this.game, horiz, vert);
   }
 
@@ -156,14 +208,32 @@ export default class GameObject extends Rectangle {
     if (this.hidden) return;
     const ctx = this.game.$context;
     ctx.beginPath();
-    ctx.fillStyle = this.color;
-    ctx.rect(
-      this.$truePosition.x,
-      this.$truePosition.y,
-      this.size.w,
-      this.size.h
-    );
-    ctx.fill();
+    if (this._images.length) {
+      ctx.drawImage(
+        this._images[this._animationFrame],
+        this.$truePosition.x,
+        this.$truePosition.y
+      );
+      if (this.animationSpeed < 100 && this._animationProgress < 100)
+        this._animationProgress += this.animationSpeed;
+      else {
+        this._animationProgress = 0;
+        if (this.loopAnimation)
+          this._animationFrame =
+            (this._animationFrame + 1) % this._images.length;
+        else if (this._animationFrame < this._images.length - 1)
+          this._animationFrame++;
+      }
+    } else {
+      ctx.fillStyle = this.color;
+      ctx.rect(
+        this.$truePosition.x,
+        this.$truePosition.y,
+        this.size.w,
+        this.size.h
+      );
+      ctx.fill();
+    }
     ctx.closePath();
     for (const child of this.childs) child.draw();
   }

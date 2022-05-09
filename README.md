@@ -20,8 +20,8 @@ It features some techniques for game core logic structuring, layout manipulation
     - [x] Define **game object**.
     - [x] Render **ractangle** game object.
     - [x] Render **text** game object.
-    - [ ] Render **image** (sprite) game object.
-    - [ ] Render **animation** from **multiple images**.
+    - [x] Render **image** (sprite) game object.
+    - [x] Render **animation** from **multiple images**.
     - [ ] Render animation from **single image** (spritesheet).
 - 📐 Layout:
     - [x] Define **size** (width and height) of game object.
